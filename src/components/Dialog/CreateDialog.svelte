@@ -1,22 +1,34 @@
 <script>
-  import { createEventDispatcher } from "svelte";
   import { scale } from "svelte/transition";
   import { cubicIn, cubicOut } from "svelte/easing";
+  import { modal } from "../../lib/stores";
+  import {
+    useMutation,
+    useQueryClient,
+  } from "@sveltestack/svelte-query";
+  import { createDebt } from "../../lib/api";
 
-  import DebtForm from "./DebtForm.svelte";
-
-  const dispatch = createEventDispatcher();
+  import DebtForm from "../DebtForm.svelte";
 
   export let amount = 0;
-  export let date = new Date().toISOString().substring(0, "YYYY-MM-DD".length);
+  export let date = new Date();
   export let description = "";
 
+  const queryClient = useQueryClient();
+
+  const createMutation = useMutation(createDebt, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("alldebts");
+    },
+  });
+
   function oncancel() {
-    dispatch("cancel");
+    $modal = undefined;
   }
 
   function oncreate() {
-    dispatch("create", { amount, date, description });
+    $createMutation.mutate({ amount, date, description });
+    $modal = undefined;
   }
 </script>
 

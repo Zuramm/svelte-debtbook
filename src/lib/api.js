@@ -1,46 +1,56 @@
 import { query as q, Client } from "faunadb";
-import {
-  clone,
-  concat,
-  filter,
-  flow,
-  map,
-  reduce,
-  remove,
-} from "lodash/fp";
+import { clone, concat, filter, flow, map, reduce, remove } from "lodash/fp";
 
 const client = new Client({
   secret: "fnAEF5wCzfACBeGfblSXbw-ckGCQ2aFz7MTAMNjG",
 });
 
 export async function getAllDebts() {
-  const res = await client.query(
-    q.Call("DebtAllGet")
-  );
+  const res = await client.query(q.Call("DebtAllGet"));
 
-  return res.data;
+  return map((debt) => ({
+    ref: debt.ref,
+    amount: debt.data.amount / 100,
+    date: debt.data.date.date,
+    description: debt.data.description,
+  }))(res.data);
 }
 
-export async function createDebt(amount, date, description) {
+export async function createDebt({amount, date, description}) {
   const res = await client.query(
-    q.Call("DebtCreate", amount * 100, date, description)
+    q.Call(
+      "DebtCreate",
+      amount * 100,
+      (date instanceof Date ? date.toISOString() : date).substring(
+        0,
+        "YYYY-MM-DD".length
+      ),
+      description
+    )
   );
 
-  return {ref: res.ref, ...res.data};
+  return { ref: res.ref, ...res.data };
 }
 
-export async function deleteDebt(ref) {
-  await client.query(
-    q.Call("DebtDelete")
-  );
+export async function deleteDebt({ref}) {
+  await client.query(q.Call("DebtDelete", ref));
 }
 
-export async function updateDebt(ref, amount, date, description) {
+export async function updateDebt({ref, amount, date, description}) {
   const res = await client.query(
-    q.Call("DebtCreate", ref, amount * 100, date, description)
+    q.Call(
+      "DebtUpdate",
+      ref,
+      amount * 100,
+      (date instanceof Date ? date.toISOString() : date).substring(
+        0,
+        "YYYY-MM-DD".length
+      ),
+      description
+    )
   );
 
-  return {ref, ...res.data};
+  return { ref, ...res.data };
 }
 
 export class DebtbookAPI {
@@ -57,9 +67,7 @@ export class DebtbookAPI {
   }
 
   async get() {
-    const res = await client.query(
-      q.Call("DebtAllGet")
-    );
+    const res = await client.query(q.Call("DebtAllGet"));
 
     this._data = map((debt) => new DebtAPI(debt))(res.data);
   }
@@ -93,9 +101,7 @@ export class DebtbookAPI {
   }
 
   async fromJSON(json) {
-    await client.query(
-      q.Call("JSONImport", json)
-    );
+    await client.query(q.Call("JSONImport", json));
 
     console.log(json);
   }
@@ -132,8 +138,6 @@ export class DebtAPI {
   }
 
   async delete() {
-    return client.query(
-      q.Call("DebtDelete", this.ref)
-    );
+    return client.query(q.Call("DebtDelete", this.ref));
   }
 }

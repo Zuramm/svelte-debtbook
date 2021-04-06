@@ -1,35 +1,54 @@
 <script>
-  import { createEventDispatcher } from "svelte";
   import { scale } from "svelte/transition";
   import { cubicIn, cubicOut } from "svelte/easing";
-	
-  import DebtForm from "./DebtForm.svelte";
+  import { modal } from "../../lib/stores";
+  import {
+    useMutation,
+    useQueryClient,
+  } from "@sveltestack/svelte-query";
+  import { deleteDebt, updateDebt } from "../../lib/api";
 
-  const dispatch = createEventDispatcher();
+  import DebtForm from "../DebtForm.svelte";
 
   export let ref;
   export let amount;
   export let date;
   export let description;
 
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation(deleteDebt, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("alldebts");
+    },
+  });
+
+  const updateMutation = useMutation(updateDebt, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("alldebts");
+    },
+  });
+
   function oncancel() {
-    dispatch("cancel");
+    $modal = undefined;
   }
 
   function ondelete() {
-    dispatch("delete", ref);
+    $deleteMutation.mutate({ref})
+    $modal = undefined;
   }
 
   function onupdate() {
-    dispatch("update", { ref, amount, date: date, description });
+    $updateMutation.mutate({ ref, amount, date, description });
+    $modal = undefined;
   }
 </script>
 
 <div
   class="bg-white p-4 rounded-xl shadow-sm space-y-4 w-full max-w-lg"
   on:click|stopPropagation
-	in:scale={{ duration: 125, start: 0.75, opacity: 0, easing: cubicOut }}
-	out:scale={{ duration: 100, start: 0.75, opacity: 0, easing: cubicIn }}
+  in:scale={{ duration: 125, start: 0.75, opacity: 0, easing: cubicOut }}
+  out:scale={{ duration: 100, start: 0.75, opacity: 0, easing: cubicIn }}
 >
   <h1 class="tex-black text-xl">Update a Debt Entry</h1>
 
