@@ -2,6 +2,8 @@
   import DebtList from "../components/DebtList.svelte";
   import DebtCreateButton from "../components/DebtCreateButton.svelte";
 	import { getContext } from "svelte";
+	import { m } from "../lib/paraglide/messages";
+  import { getLocale } from "$lib/paraglide/runtime";
 
   let today = Date.now();
 
@@ -32,30 +34,30 @@
 
 <div class="space-y-4">
   {#await totalDebtByPerson}
-    Loading...
+    {m.index_loading()}
   {:then [pastData, futureData]}
     <DebtList debts={futureData} />
 
-      <div class="mx-auto flex px-4 border-b-2 border-black">
-    <p class="flex-1">Total</p>
-    <p>
-      {#await totalDebt}
-        ...
-      {:then total}
-        {(total/100).toLocaleString(undefined, {
-          style: "currency",
-          currency: "EUR",
-        })}
-      {:catch error}
-        Error: {error.message}
-      {/await}
-    </p>
-  </div>
+    <div class="mx-auto flex px-4 border-b-2 border-black">
+      <p class="flex-1">{m.index_total()}</p>
+      <p>
+        {#await totalDebt}
+          ...
+        {:then total}
+          {(total/100).toLocaleString(getLocale(), {
+            style: "currency",
+            currency: "EUR",
+          })}
+        {:catch error}
+          {m.index_currency_error(error)}
+        {/await}
+      </p>
+    </div>
 
-      <DebtList debts={pastData} showFirstTitle={futureData.length === 0} />
+    <DebtList debts={pastData} showFirstTitle={futureData.length === 0} />
 
   {:catch error}
-    Error: {error.message}
+    {m.index_list_error(error)}
   {/await}
 </div>
 

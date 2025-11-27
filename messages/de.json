@@ -1,4 +1,18 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from de!"
+	"create_dialog_cancel": "Abbrechen",
+	"create_dialog_create": "Erstellen",
+	"update_dialog_cancel": "Abbrechen",
+	"update_dialog_delete": "Löschen",
+	"update_dialog_update": "Aktualisieren",
+	"debt_form_description": "Beschreibung",
+	"debt_form_date": "Datum",
+	"debt_form_amount": "Betrag",
+	"debt_form_amount_negative": "du schuldest jemandem {amount}",
+	"debt_form_amount_positive": "jemand schuldet dir {amount}",
+	"app_title": "Debtbook",
+	"index_loading": "Lädt...",
+	"index_currency_error": "Fehler: {message}",
+	"index_list_error": "Fehler: {message}",
+	"index_total": "Gesamt"
 }

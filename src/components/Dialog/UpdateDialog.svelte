@@ -3,6 +3,7 @@
   import { cubicIn, cubicOut } from "svelte/easing";
   import { modal } from "../../lib/stores";
   import { getContext } from "svelte";
+  import { m } from "../../lib/paraglide/messages";
 
   import DebtForm from "../DebtForm.svelte";
 
@@ -51,20 +52,20 @@
       class="transition py-2 px-4 rounded-full hover:bg-gray-100 focus:outline-none focus:ring focus:ring-green-300"
       on:click={oncancel}
     >
-      Cancel
+      {m.update_dialog_cancel()}
     </button>
     <div class="space-x-2">
       <button
         class="transition py-2 px-4 border-2 border-red-500 rounded-full text-red-600 text-base hover:bg-red-500 hover:text-white focus:outline-none focus:ring focus:ring-red-300"
         on:click={ondelete}
       >
-        Delete
+        {m.update_dialog_delete()}
       </button>
       <button
         class="transition py-2 px-4 border-none rounded-full bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
         on:click={onupdate}
       >
-        Update
+        {m.update_dialog_update()}
       </button>
     </div>
   </div>

@@ -1,5 +1,6 @@
 <script>
   import DebtCard from "./DebtCard.svelte";
+  import { getLocale } from "$lib/paraglide/runtime";
 
   /** @type {import("$lib/api").Transaction[]} */
   export let debts;
@@ -39,7 +40,7 @@
 {#each data as month, i}
   {#if i > 0 || showFirstTitle}
     <h2 class="text-2xl pt-2 border-b-2 border-green-600 text-green-900">
-      {month.date.toLocaleDateString("en-US", { month: "long" })}
+      {month.date.toLocaleDateString(getLocale(), { month: "long" })}
     </h2>
   {/if}
   {#each month.data as debt}

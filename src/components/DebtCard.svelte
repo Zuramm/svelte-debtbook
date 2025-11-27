@@ -1,7 +1,7 @@
 <script>
   import { fly } from "svelte/transition";
   import { modal } from "../lib/stores";
-
+  import { getLocale } from "$lib/paraglide/runtime";
   import UpdateDialog from "./dialog/UpdateDialog.svelte";
 
   /** @type {number} */
@@ -56,7 +56,7 @@
     {/if}
     <br />
     <span class="text-gray-400 {isInFuture ? 'text-gray-500' : ''}"
-      >{new Date(date).toLocaleDateString()}</span
+      >{new Date(date).toLocaleDateString(getLocale())}</span
     >
   </p>
   <p
@@ -64,6 +64,6 @@
     class:text-red-600={!isInFuture && amount < 0}
     class:text-green-600={!isInFuture && amount > 0}
   >
-    {(amount / 100).toLocaleString(undefined, { style: "currency", currency: "EUR" })}
+    {(amount / 100).toLocaleString(getLocale(), { style: "currency", currency: "EUR" })}
   </p>
 </div>
