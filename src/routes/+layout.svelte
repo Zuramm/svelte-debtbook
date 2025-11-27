@@ -4,8 +4,8 @@
 	import { pwaInfo } from 'virtual:pwa-info';
 	import { Repository } from '$lib/api';
 	import { setContext } from 'svelte';
-	import Modal from '../components/Modal.svelte';
-	import { m } from '../lib/paraglide/messages';
+	import Modal from '$components/Modal.svelte';
+	import { m } from '$lib/paraglide/messages';
 	import { locales, setLocale } from '$lib/paraglide/runtime';
 
 	let webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '')
@@ -50,7 +50,7 @@
               {m.app_title()}
             </h1>
 			{#each locales as locale}
-				<button onclick={() => setLocale(locale)} class="transition-colors rounded-md px-2 py-1 bg-green-200 text-green-900 hover:bg-green-400">{locale}</button>
+				<button onclick={() => setLocale(locale)} class="transition-colors rounded-md px-2 py-1 bg-green-200 text-green-900 hover:bg-green-300">{locale}</button>
 			{/each}
             <!-- {#if queryClient.isFetching()}
               <Spinner className="mx-4 w-5 text-green-600" />

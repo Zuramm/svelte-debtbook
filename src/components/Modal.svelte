@@ -1,5 +1,5 @@
 <script>
-  import { modal } from "../lib/stores";
+  import { modal } from "$lib/stores";
 
   /**
    * @param {KeyboardEvent} event
@@ -9,17 +9,20 @@
       $modal = undefined;
     }
   }
+
+  let ModalContent = $derived($modal?.[0]);
+  let modalProps = $derived($modal?.[1]);
 </script>
 
 {#if $modal != undefined}
   <div
     class="fixed inset-0 flex justify-center items-center font-mono"
     style="background: #0002"
-    on:click={() => $modal = undefined}
-    on:keydown={onKeyDown}
+    onclick={() => $modal = undefined}
+    onkeydown={onKeyDown}
     role="button"
     tabindex="0"
   >
-    <svelte:component this={$modal?.[0]} {...$modal?.[1]} />
+    <ModalContent {...modalProps} />
   </div>
 {/if}

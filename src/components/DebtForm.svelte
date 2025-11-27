@@ -1,15 +1,26 @@
 <script>
-  import { m } from "../lib/paraglide/messages";
+  import { m } from "$lib/paraglide/messages";
   import { getLocale } from "$lib/paraglide/runtime";
 
-  /** @type {number} */
-  export let amount = 0;
-  /** @type {Date} */
-  export let date = new Date();
-  /** @type {string} */
-  export let description = "";
+  /** @type {{ amount: number, date: Date, description: string }} */
+  let { amount = $bindable(), date = $bindable(), description = $bindable() } = $props();
 
-  $: dateInput = date.toISOString().substring(0, "YYYY-MM-DD".length);
+  /**
+   * @param {Date?} date
+   * @returns {string?}
+   */
+  function getDateString(date) {
+    if (date) {
+      const string = date.toISOString();
+      if (string === "Invalid Date") {
+        return null;
+      }
+      return date.toISOString().substring(0, "YYYY-MM-DD".length);
+    }
+    return null;
+  }
+
+  let dateInput = $derived(getDateString(date));
 
   /**
    * @param {number} amount
@@ -23,7 +34,9 @@
   }
 
   function updateDate() {
-    date = new Date(dateInput);
+    if (dateInput) {
+      date = new Date(dateInput);
+    }
   }
 </script>
 
@@ -44,7 +57,7 @@
     id="debt-date"
     type="date"
     bind:value={dateInput}
-    on:change={updateDate}
+    onchange={updateDate}
   />
 </div>
 

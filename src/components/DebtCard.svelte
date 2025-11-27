@@ -1,19 +1,13 @@
 <script>
   import { fly } from "svelte/transition";
-  import { modal } from "../lib/stores";
+  import { modal } from "$lib/stores";
   import { getLocale } from "$lib/paraglide/runtime";
-  import UpdateDialog from "./dialog/UpdateDialog.svelte";
+  import UpdateDialog from "$components/dialog/UpdateDialog.svelte";
 
-  /** @type {number} */
-  export let ref;
-  /** @type {number} */
-  export let amount = 0;
-  /** @type {Date} */
-  export let date = new Date();
-  /** @type {string} */
-  export let description = "";
+  /** @type {{ ref: number, amount: number, date: Date, description: string }} */
+  let { ref, amount, date, description } = $props();
 
-  $: isInFuture = date > new Date();
+  let isInFuture = $derived(date > new Date());
 
   function openUpdateDialog() {
     $modal = [
@@ -42,8 +36,8 @@
     ? 'bg-white bg-opacity-60 shadow-sm text-gray-600 italic'
     : 'bg-white shadow-md'}"
   tabindex="0"
-  on:click={openUpdateDialog}
-  on:keydown={onKeyDown}
+  onclick={openUpdateDialog}
+  onkeydown={onKeyDown}
   role="button"
   in:fly={{ y: 200, duration: 200 }}
   out:fly={{ y: 200, duration: 200 }}

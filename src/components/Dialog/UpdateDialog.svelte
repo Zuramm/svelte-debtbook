@@ -1,20 +1,14 @@
 <script>
   import { scale } from "svelte/transition";
   import { cubicIn, cubicOut } from "svelte/easing";
-  import { modal } from "../../lib/stores";
+  import { modal } from "$lib/stores";
   import { getContext } from "svelte";
-  import { m } from "../../lib/paraglide/messages";
+  import { m } from "$lib/paraglide/messages";
 
-  import DebtForm from "../DebtForm.svelte";
+  import DebtForm from "$components/DebtForm.svelte";
 
-  /** @type {number} */
-  export let ref;
-  /** @type {number} */
-  export let amount;
-  /** @type {Date} */
-  export let date;
-  /** @type {string} */
-  export let description;
+  /** @type {{ ref: number, amount: number, date: Date, description: string }} */
+  let { ref, amount, date, description } = $props();
 
   /** @type {import("$lib/api").Repository} */
   const debtbook = getContext('debtbook');
@@ -36,8 +30,8 @@
 
 <div
   class="bg-white p-4 rounded-xl shadow-sm space-y-4 w-full max-w-lg"
-  on:click|stopPropagation
-  on:keydown|stopPropagation
+  onclick={e => e.stopPropagation()}
+  onkeydown={e => e.stopPropagation()}
   role="dialog"
   tabindex="0"
   in:scale={{ duration: 125, start: 0.75, opacity: 0, easing: cubicOut }}
@@ -50,20 +44,20 @@
   <div class="flex justify-between pt-1">
     <button
       class="transition py-2 px-4 rounded-full hover:bg-gray-100 focus:outline-none focus:ring focus:ring-green-300"
-      on:click={oncancel}
+      onclick={oncancel}
     >
       {m.update_dialog_cancel()}
     </button>
     <div class="space-x-2">
       <button
         class="transition py-2 px-4 border-2 border-red-500 rounded-full text-red-600 text-base hover:bg-red-500 hover:text-white focus:outline-none focus:ring focus:ring-red-300"
-        on:click={ondelete}
+        onclick={ondelete}
       >
         {m.update_dialog_delete()}
       </button>
       <button
         class="transition py-2 px-4 border-none rounded-full bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
-        on:click={onupdate}
+        onclick={onupdate}
       >
         {m.update_dialog_update()}
       </button>

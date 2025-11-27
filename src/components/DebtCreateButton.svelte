@@ -1,8 +1,8 @@
 <script>
   import { modal } from "../lib/stores";
 
-  import Plus from "./icons/Plus.svelte";
-  import CreateDialog from "./dialog/CreateDialog.svelte";
+  import Plus from "$components/icons/Plus.svelte";
+  import CreateDialog from "$components/dialog/CreateDialog.svelte";
 
   function openCreateDialog() {
     $modal = [CreateDialog, {}];

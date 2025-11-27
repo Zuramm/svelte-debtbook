@@ -1,13 +1,11 @@
 <script>
-  import DebtCard from "./DebtCard.svelte";
+  import DebtCard from "$components/DebtCard.svelte";
   import { getLocale } from "$lib/paraglide/runtime";
 
-  /** @type {import("$lib/api").Transaction[]} */
-  export let debts;
-  /** @type {boolean} */
-  export let showFirstTitle = true;
+  /** @type {{ debts: import("$lib/api").Transaction[], showFirstTitle?: boolean }} */
+  let { debts, showFirstTitle = true } = $props();
 
-  $: data = (() => {
+  let data = $derived((() => {
     /** Group debts by "YYYY-MM" @type {Record<string, import("$lib/api").Transaction[]>} */
     const groups = {};
     if (debts) {
@@ -34,7 +32,7 @@
     // Sort months by date descending (most recent first)
     result.sort((a, b) => b.date.getTime() - a.date.getTime());
     return result;
-  })();
+  })());
 </script>
 
 {#each data as month, i}
