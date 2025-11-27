@@ -2,26 +2,38 @@
   import { fly } from "svelte/transition";
   import { modal } from "../lib/stores";
 
-  import UpdateDialog from "./Dialog/UpdateDialog.svelte";
+  import UpdateDialog from "./dialog/UpdateDialog.svelte";
 
+  /** @type {number} */
   export let ref;
+  /** @type {number} */
   export let amount = 0;
+  /** @type {Date} */
   export let date = new Date();
+  /** @type {string} */
   export let description = "";
 
   $: isInFuture = date > new Date();
 
   function openUpdateDialog() {
-    console.log("hello")
     $modal = [
       UpdateDialog,
       {
         ref,
-        amount,
+        amount: amount / 100,
         date,
         description
       },
     ];
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   */
+  function onKeyDown(event) {
+    if (event.key === "Enter") {
+      openUpdateDialog();
+    }
   }
 </script>
 
@@ -31,6 +43,8 @@
     : 'bg-white shadow-md'}"
   tabindex="0"
   on:click={openUpdateDialog}
+  on:keydown={onKeyDown}
+  role="button"
   in:fly={{ y: 200, duration: 200 }}
   out:fly={{ y: 200, duration: 200 }}
 >
@@ -50,6 +64,6 @@
     class:text-red-600={!isInFuture && amount < 0}
     class:text-green-600={!isInFuture && amount > 0}
   >
-    {amount.toLocaleString(undefined, { style: "currency", currency: "EUR" })}
+    {(amount / 100).toLocaleString(undefined, { style: "currency", currency: "EUR" })}
   </p>
 </div>

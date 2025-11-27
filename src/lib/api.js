@@ -1,143 +1,323 @@
-import { query as q, Client } from "faunadb";
-import { clone, concat, filter, flow, map, reduce, remove } from "lodash/fp";
-
-const client = new Client({
-  secret: "fnAEF5wCzfACBeGfblSXbw-ckGCQ2aFz7MTAMNjG",
-});
-
-export async function getAllDebts() {
-  const res = await client.query(q.Call("DebtAllGet"));
-
-  return map((debt) => ({
-    ref: debt.ref,
-    amount: debt.data.amount / 100,
-    date: debt.data.date.date,
-    description: debt.data.description,
-  }))(res.data);
+export class Person {
+	/**
+	 * Create a new person
+	 * @param {object} person
+	 * @param {number} person.id
+	 * @param {string} person.name
+	 */
+	constructor(person) {
+		this.id = person.id;
+		this.name = person.name;
+	}
 }
 
-export async function createDebt({amount, date, description}) {
-  const res = await client.query(
-    q.Call(
-      "DebtCreate",
-      amount * 100,
-      (date instanceof Date ? date.toISOString() : date).substring(
-        0,
-        "YYYY-MM-DD".length
-      ),
-      description
-    )
-  );
-
-  return { ref: res.ref, ...res.data };
+export class Transaction {
+	/**
+	 * Create a new transaction
+	 * @param {object} transaction
+	 * @param {number} transaction.id
+	 * @param {number} transaction.amount in cents
+	 * @param {number} transaction.person_id
+	 * @param {string} transaction.description
+	 * @param {number} transaction.timestamp in milliseconds since epoch
+	 */
+	constructor(transaction) {
+		this.id = transaction.id;
+		this.amount = transaction.amount;
+		this.person_id = transaction.person_id;
+		this.description = transaction.description;
+		this.timestamp = transaction.timestamp;
+	}
 }
 
-export async function deleteDebt({ref}) {
-  await client.query(q.Call("DebtDelete", ref));
-}
+export class Repository {
+	constructor() {
+		this._counters = {
+			transaction: 77,
+			person: 2
+		};
+		this._people = [
+			{ id: 1, name: 'Alex' },
+			{ id: 2, name: 'Dani' }
+		];
+		this._transaction = [
+			{ id: 1, amount: -100000, person_id: 1, description: '', timestamp: 1706271391388 },
+			{ id: 3, amount: 60000, person_id: 1, description: '', timestamp: 1706699224691 },
+			{ id: 4, amount: -25000, person_id: 2, description: '', timestamp: 1683158400000 },
+			{ id: 5, amount: 5000, person_id: 2, description: '', timestamp: 1685577600000 },
+			{ id: 6, amount: -20000, person_id: 2, description: '', timestamp: 1706699363518 },
+			{ id: 7, amount: -10000, person_id: 1, description: 'Weed ', timestamp: 1706707435451 },
+			{
+				id: 8,
+				amount: -8000,
+				person_id: 1,
+				description: 'Monatliche Kosten ',
+				timestamp: 1706745600000
+			},
+			{ id: 9, amount: -5000, person_id: 1, description: 'Sideshop ', timestamp: 1707149643156 },
+			{ id: 10, amount: -20000, person_id: 1, description: 'Weed ', timestamp: 1708300800000 },
+			{ id: 11, amount: -4000, person_id: 1, description: 'Rent ', timestamp: 1706745600000 },
+			{ id: 12, amount: -10000, person_id: 2, description: 'PayPal', timestamp: 1709939882092 },
+			{
+				id: 13,
+				amount: -5000,
+				person_id: 2,
+				description: 'bar in Berlin ',
+				timestamp: 1710457047869
+			},
+			{ id: 14, amount: 60000, person_id: 1, description: '', timestamp: 1708992000000 },
+			{ id: 15, amount: -4000, person_id: 1, description: 'Rent', timestamp: 1709251200000 },
+			{
+				id: 16,
+				amount: -5000,
+				person_id: 1,
+				description: 'monatliche Kosten ',
+				timestamp: 1710602622602
+			},
+			{ id: 17, amount: 10000, person_id: 2, description: '', timestamp: 1710374400000 },
+			{ id: 18, amount: -10000, person_id: 1, description: 'Einkauf', timestamp: 1710616309057 },
+			{
+				id: 19,
+				amount: -20000,
+				person_id: 2,
+				description: 'Geburtstagswoche ',
+				timestamp: 1710028800000
+			},
+			{
+				id: 20,
+				amount: -10000,
+				person_id: 1,
+				description: 'For PayPal ',
+				timestamp: 1710886291446
+			},
+			{ id: 21, amount: -10000, person_id: 1, description: 'Weed ', timestamp: 1711211805243 },
+			{
+				id: 22,
+				amount: -5000,
+				person_id: 1,
+				description: 'Dinner with sister ',
+				timestamp: 1716681600000
+			},
+			{
+				id: 24,
+				amount: -5000,
+				person_id: 1,
+				description: 'monthly payments ',
+				timestamp: 1711929600000
+			},
+			{
+				id: 25,
+				amount: -8000,
+				person_id: 1,
+				description: 'monthly payments ',
+				timestamp: 1714521600000
+			},
+			{ id: 26, amount: -20000, person_id: 1, description: 'Weed ', timestamp: 1716911943817 },
+			{ id: 27, amount: 89000, person_id: 1, description: '', timestamp: 1717027200000 },
+			{ id: 28, amount: -4300, person_id: 1, description: 'Lieferando ', timestamp: 1717027200000 },
+			{ id: 29, amount: -4800, person_id: 1, description: 'MyHeritage', timestamp: 1716595200000 },
+			{ id: 30, amount: -30000, person_id: 1, description: 'Weed', timestamp: 1718449899421 },
+			{ id: 31, amount: -9000, person_id: 1, description: 'monatlich', timestamp: 1717200000000 },
+			{ id: 32, amount: 15000, person_id: 1, description: '', timestamp: 1714435200000 },
+			{ id: 33, amount: -10000, person_id: 1, description: 'Weed money', timestamp: 1720310400000 },
+			{ id: 34, amount: -9000, person_id: 1, description: 'monatlich ', timestamp: 1719792000000 },
+			{ id: 35, amount: -20000, person_id: 1, description: 'weed money', timestamp: 1721347200000 },
+			{ id: 36, amount: -5000, person_id: 2, description: '', timestamp: 1721742360621 },
+			{ id: 37, amount: -9000, person_id: 1, description: 'monthly ', timestamp: 1722470400000 },
+			{ id: 38, amount: 40000, person_id: 1, description: '', timestamp: 1722038400000 },
+			{ id: 39, amount: -10000, person_id: 1, description: 'Shopping', timestamp: 1724284800000 },
+			{ id: 40, amount: -10000, person_id: 1, description: 'Shopping', timestamp: 1723593600000 },
+			{
+				id: 41,
+				amount: -4000,
+				person_id: 1,
+				description: 'Essen Bestellen',
+				timestamp: 1724613952353
+			},
+			{ id: 42, amount: -5000, person_id: 1, description: 'Weed', timestamp: 1730747142268 },
+			{ id: 43, amount: -10000, person_id: 1, description: 'shopping', timestamp: 1731715200000 },
+			{ id: 44, amount: -9000, person_id: 1, description: 'monthly', timestamp: 1725148800000 },
+			{ id: 45, amount: -9000, person_id: 1, description: 'monthly', timestamp: 1727740800000 },
+			{ id: 46, amount: -9000, person_id: 1, description: 'monthly', timestamp: 1730419200000 },
+			{ id: 47, amount: 100000, person_id: 1, description: '', timestamp: 1732665600000 },
+			{ id: 48, amount: -2000, person_id: 1, description: 'Snacks', timestamp: 1733184000000 },
+			{ id: 49, amount: -9000, person_id: 1, description: 'monthly', timestamp: 1733397385234 },
+			{ id: 50, amount: -14000, person_id: 2, description: '', timestamp: 1734617639673 },
+			{ id: 51, amount: -15000, person_id: 2, description: '', timestamp: 1745498651037 },
+			{ id: 52, amount: 33100, person_id: 1, description: '', timestamp: 1735516800000 },
+			{ id: 53, amount: 20000, person_id: 1, description: '', timestamp: 1743033600000 },
+			{ id: 54, amount: -9500, person_id: 1, description: 'monthly', timestamp: 1736294400000 },
+			{ id: 55, amount: -9500, person_id: 1, description: 'monthly', timestamp: 1738540800000 },
+			{ id: 56, amount: -15500, person_id: 1, description: 'monthly', timestamp: 1744675200000 },
+			{ id: 57, amount: -10500, person_id: 1, description: 'monthly', timestamp: 1746144000000 },
+			{ id: 58, amount: -10500, person_id: 1, description: 'monthly', timestamp: 1750966115379 },
+			{
+				id: 59,
+				amount: -13000,
+				person_id: 1,
+				description: 'My Heritage',
+				timestamp: 1719532800000
+			},
+			{ id: 60, amount: -10500, person_id: 1, description: 'monthly', timestamp: 1751450335821 },
+			{ id: 61, amount: 15000, person_id: 1, description: 'Rundfunk', timestamp: 1751450719560 },
+			{ id: 62, amount: -5000, person_id: 1, description: 'cash', timestamp: 1751452396114 },
+			{ id: 63, amount: -10000, person_id: 1, description: 'weed', timestamp: 1752624000000 },
+			{ id: 64, amount: 10000, person_id: 1, description: '', timestamp: 1752796800000 },
+			{ id: 65, amount: -2000, person_id: 1, description: '', timestamp: 1752969600000 },
+			{ id: 66, amount: -10000, person_id: 1, description: 'Weed', timestamp: 1753142400000 },
+			{
+				id: 67,
+				amount: -5000,
+				person_id: 1,
+				description: 'Errand money',
+				timestamp: 1755085537082
+			},
+			{ id: 68, amount: -10000, person_id: 1, description: 'weed', timestamp: 1754265600000 },
+			{ id: 70, amount: -10000, person_id: 1, description: '', timestamp: 1758672000000 },
+			{ id: 71, amount: 30000, person_id: 1, description: '', timestamp: 1756339200000 },
+			{ id: 72, amount: -11000, person_id: 1, description: 'monthly', timestamp: 1756684800000 },
+			{ id: 73, amount: 2754, person_id: 1, description: '', timestamp: 1759411069591 },
+			{ id: 74, amount: 30000, person_id: 1, description: '', timestamp: 1759190400000 },
+			{ id: 75, amount: -8200, person_id: 1, description: '', timestamp: 1759276800000 },
+			{ id: 76, amount: -10000, person_id: 1, description: '', timestamp: 1761495528163 },
+			{ id: 77, amount: -1000, person_id: 1, description: 'weed', timestamp: 1763769600000 }
+		].map((data) => new Transaction(data));
+	}
 
-export async function updateDebt({ref, amount, date, description}) {
-  const res = await client.query(
-    q.Call(
-      "DebtUpdate",
-      ref,
-      amount * 100,
-      (date instanceof Date ? date.toISOString() : date).substring(
-        0,
-        "YYYY-MM-DD".length
-      ),
-      description
-    )
-  );
+	async personGetPage(page = 0) {
+		return this._people.slice(page * 100, (page + 1) * 100);
+	}
 
-  return { ref, ...res.data };
-}
+	/**
+	 * Get a person by id
+	 * @param {number} id
+	 * @returns {Promise<Person|undefined>}
+	 */
+	async personGet(id) {
+		return this._people.find((item) => item.id === id);
+	}
 
-export class DebtbookAPI {
-  constructor() {
-    this._data = [];
-  }
+	/**
+	 * Create a new person
+	 * @param {object} data
+	 * @param {string} data.name
+	 * @returns {Promise<Person>}
+	 */
+	async createPerson(data) {
+		const newPerson = new Person({ id: this._counters.person++, ...data });
+		this._people.push(newPerson);
+		return newPerson;
+	}
 
-  get data() {
-    return clone(this._data);
-  }
+	/**
+	 * Update a person
+	 * @param {object} data
+	 * @param {number} data.id
+	 * @param {string} data.name
+	 * @returns {Promise<Person>}
+	 */
+	async updatePerson(data) {
+		const index = this._people.findIndex((item) => item.id === data.id);
+		const newPerson = new Person(data);
+		this._people[index] = newPerson;
+		return newPerson;
+	}
 
-  [Symbol.iterator]() {
-    return this._data.values();
-  }
+	/**
+	 * Delete a person
+	 * @param {number} id
+	 * @returns {Promise<Person>}
+	 */
+	async deletePerson(id) {
+		const index = this._people.findIndex((item) => item.id === id);
+		const person = this._people.splice(index, 1)[0];
+		return person;
+	}
 
-  async get() {
-    const res = await client.query(q.Call("DebtAllGet"));
+	/**
+	 * Get the total debt
+	 * @returns {Promise<number>}
+	 */
+	async transactionGetTotalDebt() {
+		const now = Date.now();
+		return this._transaction
+			.filter((item) => item.timestamp <= now)
+			.reduce((acc, item) => acc + item.amount, 0);
+	}
 
-    this._data = map((debt) => new DebtAPI(debt))(res.data);
-  }
+	/**
+	 * Get the total debt by person
+	 * @param {number} person_id
+	 * @returns {Promise<number>}
+	 */
+	async transactionGetTotalDebtByPerson(person_id) {
+		const now = Date.now();
+		return this._transaction
+			.filter((item) => item.person_id === person_id && item.timestamp <= now)
+			.reduce((acc, item) => acc + item.amount, 0);
+	}
 
-  sum() {
-    const now = new Date().toISOString().substring(0, "YYYY-MM-DD".length);
-    return flow(
-      filter((debt) => debt.date <= now),
-      reduce((acc, debt) => acc + debt.amount, 0)
-    )(this._data);
-  }
+	/**
+	 * Get a page of transactions
+	 * @param {number} page
+	 * @param {number} person_id
+	 * @returns {Promise<Transaction[]>}
+	 */
+	async transactionGetPageByPerson(person_id, page = 0) {
+		return this._transaction
+			.filter((item) => item.person_id === person_id)
+			.slice(page * 100, (page + 1) * 100);
+	}
 
-  async create({ amount = 0, date, description = "" }) {
-    const res = await client.query(
-      q.Call("DebtCreate", amount * 100, date, description)
-    );
+	/**
+	 * Get a transaction by id
+	 * @param {number} id
+	 * @returns {Promise<Transaction|undefined>}
+	 */
+	async transactionGet(id) {
+		return this._transaction.find((item) => item.id === id);
+	}
 
-    const debt = new DebtAPI(res);
+	/**
+	 * Create a new transaction
+	 * @param {object} data
+	 * @param {number} data.amount in cents
+	 * @param {number} data.person_id
+	 * @param {string} data.description
+	 * @param {number} data.timestamp in milliseconds since epoch
+	 * @returns {Promise<Transaction>}
+	 */
+	async create(data) {
+		const newTransaction = new Transaction({ id: this._counters.transaction++, ...data });
+		this._transaction.push(newTransaction);
+		return newTransaction;
+	}
 
-    this._data = concat(debt)(this._data);
-  }
+	/**
+	 * Update a transaction
+	 * @param {object} data
+	 * @param {number} data.id
+	 * @param {number} data.amount in cents
+	 * @param {number} data.person_id
+	 * @param {string} data.description
+	 * @param {number} data.timestamp in milliseconds since epoch
+	 * @returns {Promise<Transaction>}
+	 */
+	async transactionUpdate(data) {
+		const index = this._transaction.findIndex((item) => item.id === data.id);
+		const newTransaction = new Transaction(data);
+		this._transaction[index] = newTransaction;
+		return newTransaction;
+	}
 
-  async update(debt, data) {
-    await debt.update(data);
-  }
-
-  async delete(debt) {
-    await debt.delete();
-
-    remove(debt)(this._data);
-  }
-
-  async fromJSON(json) {
-    await client.query(q.Call("JSONImport", json));
-
-    console.log(json);
-  }
-
-  toJSON() {
-    return map((debt) => [debt.amount, debt.date, debt.description])(
-      this._data
-    );
-  }
-}
-
-export class DebtAPI {
-  constructor(debt) {
-    this.ref = debt.ref;
-    this.from(debt);
-  }
-
-  from(debt) {
-    this.amount = debt.data.amount / 100;
-    this.date = debt.data.date.value.substring(0, "YYYY-MM-DD".length);
-    this.description = debt.data.description;
-  }
-
-  async update({
-    amount = this.amount,
-    date = this.date,
-    description = this.description,
-  }) {
-    const res = await client.query(
-      q.Call("DebtUpdate", this.ref, amount * 100, date, description)
-    );
-
-    this.from(res);
-  }
-
-  async delete() {
-    return client.query(q.Call("DebtDelete", this.ref));
-  }
+	/**
+	 * Delete a transaction
+	 * @param {number} id
+	 * @returns {Promise<Transaction>}
+	 */
+	async transactionDelete(id) {
+		const index = this._transaction.findIndex((item) => item.id === id);
+		const transaction = this._transaction.splice(index, 1)[0];
+		return transaction;
+	}
 }

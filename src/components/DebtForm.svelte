@@ -1,10 +1,15 @@
 <script>
+  /** @type {number} */
   export let amount = 0;
+  /** @type {Date} */
   export let date = new Date();
+  /** @type {string} */
   export let description = "";
 
-  function updateDate(event) {
-    date = new Date(event.target.value);
+  $: dateInput = date.toISOString().substring(0, "YYYY-MM-DD".length);
+
+  function updateDate() {
+    date = new Date(dateInput);
   }
 </script>
 
@@ -24,8 +29,8 @@
     class="transition w-full mt-1 p-2 border-none rounded-md shadow-md bg-gray-50 focus:outline-none focus:ring focus:ring-green-300"
     id="debt-date"
     type="date"
-    value={date.toISOString().substring(0, "YYYY-MM-DD".length)}
-    on:input={updateDate}
+    bind:value={dateInput}
+    on:change={updateDate}
   />
 </div>
 
@@ -33,7 +38,7 @@
   <label for="debt-amount">
     Amount
     {#if amount < 0}
-      (you owe someone {Math.abs(amount).toLocaleString(undefined, {
+      (you owe someone {(-amount).toLocaleString(undefined, {
         style: "currency",
         currency: "EUR",
       })})
