@@ -5,14 +5,14 @@
 	"update_dialog_cancel": "Cancel",
 	"update_dialog_delete": "Delete",
 	"update_dialog_update": "Update",
-	"debt_form_description": "Description",
-	"debt_form_date": "Date",
-	"debt_form_amount": "Amount",
-	"debt_form_amount_negative": "you owe someone {amount}",
-	"debt_form_amount_positive": "someone owes you {amount}",
 	"app_title": "Debtbook",
 	"index_loading": "Loading...",
 	"index_currency_error": "Error: {message}",
 	"index_list_error": "Error: {message}",
-	"index_total": "Total"
+	"index_total": "Total",
+	"debt_form_description": "Description",
+	"debt_form_date": "Date",
+	"debt_form_amount": "Amount",
+	"debt_form_amount_negative": "you owe someone {amount}",
+	"debt_form_amount_positive": "someone owes you {amount}"
 }

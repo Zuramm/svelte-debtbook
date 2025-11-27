@@ -1,6 +1,6 @@
 <script>
-  import DebtList from "$components/DebtList.svelte";
-  import DebtCreateButton from "$components/DebtCreateButton.svelte";
+  import TransactionList from "$components/TransactionList.svelte";
+  import TransactionCreateButton from "$components/TransactionCreateButton.svelte";
 	import { getContext, onMount } from "svelte";
 	import { m } from "$lib/paraglide/messages";
   import { getLocale } from "$lib/paraglide/runtime";
@@ -67,7 +67,7 @@
     </div>
   {/if}
 
-  <DebtList debts={futureData} />
+  <TransactionList transactions={futureData} />
 
   <div class="mx-auto flex px-4 border-b-2 border-black">
     <p class="flex-1">{m.index_total()}</p>
@@ -85,7 +85,7 @@
     </p>
   </div>
 
-  <DebtList debts={pastData} showFirstTitle={futureData.length === 0} />
+  <TransactionList transactions={pastData} showFirstTitle={futureData.length === 0} />
 </div>
 
-<DebtCreateButton />
+<TransactionCreateButton />

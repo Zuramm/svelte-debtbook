@@ -1,22 +1,22 @@
 <script>
-  import DebtCard from "$components/DebtCard.svelte";
+  import TransactionCard from "$components/TransactionCard.svelte";
   import { getLocale } from "$lib/paraglide/runtime";
 
-  /** @type {{ debts: import("$lib/api").Transaction[], showFirstTitle?: boolean }} */
-  let { debts, showFirstTitle = true } = $props();
+  /** @type {{ transactions: import("$lib/api").Transaction[], showFirstTitle?: boolean }} */
+  let { transactions, showFirstTitle = true } = $props();
 
   let data = $derived((() => {
-    /** Group debts by "YYYY-MM" @type {Record<string, import("$lib/api").Transaction[]>} */
+    /** Group transactions by "YYYY-MM" @type {Record<string, import("$lib/api").Transaction[]>} */
     const groups = {};
-    if (debts) {
-      for (const debt of debts) {
-        const monthKey = new Date(debt.timestamp).toISOString().substring(0, "YYYY-MM".length);
+    if (transactions) {
+      for (const transaction of transactions) {
+        const monthKey = new Date(transaction.timestamp).toISOString().substring(0, "YYYY-MM".length);
         if (!groups[monthKey]) groups[monthKey] = [];
-        groups[monthKey].push(debt);
+        groups[monthKey].push(transaction);
       }
     }
-    // Convert groups to pairs [date, debts[]]
     const pairs = Object.entries(groups);
+
     // Sort each group by date then description, most recent first
     const result = pairs.map(([date, months]) => {
       const sorted = [...months].sort((a, b) => {
@@ -41,12 +41,12 @@
       {month.date.toLocaleDateString(getLocale(), { month: "long" })}
     </h2>
   {/if}
-  {#each month.data as debt}
-    <DebtCard
-      ref={debt.id}
-      amount={debt.amount}
-      date={new Date(debt.timestamp)}
-      description={debt.description}
+  {#each month.data as transaction}
+    <TransactionCard
+      ref={transaction.id}
+      amount={transaction.amount}
+      date={new Date(transaction.timestamp)}
+      description={transaction.description}
     />
   {/each}
 {/each}

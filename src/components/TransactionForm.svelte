@@ -41,20 +41,20 @@
 </script>
 
 <div>
-  <label for="debt-description">{m.debt_form_description()}</label>
+  <label for="transaction-description">{m.transaction_form_description()}</label>
   <input
     class="transition w-full mt-1 p-2 border-none rounded-md shadow-md bg-gray-50 focus:outline-none focus:ring focus:ring-green-300"
-    id="debt-description"
+    id="transaction-description"
     type="text"
     bind:value={description}
   />
 </div>
 
 <div>
-  <label for="debt-date">{m.debt_form_date()}</label>
+  <label for="transaction-date">{m.transaction_form_date()}</label>
   <input
     class="transition w-full mt-1 p-2 border-none rounded-md shadow-md bg-gray-50 focus:outline-none focus:ring focus:ring-green-300"
-    id="debt-date"
+    id="transaction-date"
     type="date"
     bind:value={dateInput}
     onchange={updateDate}
@@ -62,17 +62,17 @@
 </div>
 
 <div>
-  <label for="debt-amount">
-    {m.debt_form_amount()}
+  <label for="transaction-amount">
+    {m.transaction_form_amount()}
     {#if amount < 0}
-      ({m.debt_form_amount_negative({amount: formatAmount(-amount)})})
+      ({m.transaction_form_amount_negative({amount: formatAmount(-amount)})})
     {:else if amount > 0}
-      ({m.debt_form_amount_positive({amount: formatAmount(amount)})})
+      ({m.transaction_form_amount_positive({amount: formatAmount(amount)})})
     {/if}
   </label>
   <input
     class="transition w-full mt-1 p-2 border-none rounded-md shadow-md bg-gray-50 focus:outline-none focus:ring focus:ring-green-300"
-    id="debt-amount"
+    id="transaction-amount"
     type="number"
     bind:value={amount}
   />

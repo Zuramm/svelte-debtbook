@@ -5,7 +5,7 @@
   import { getContext } from "svelte";
   import { m } from "$lib/paraglide/messages";
 
-  import DebtForm from "$components/DebtForm.svelte";
+  import TransactionForm from "$components/TransactionForm.svelte";
 
   /** @type {{ amount: number, date: Date, description: string }} */
   let { amount = $bindable(), date = $bindable(), description = $bindable() } = $props();
@@ -34,7 +34,7 @@
 >
   <h1 class="tex-black text-xl">Create a Debt Entry</h1>
 
-  <DebtForm bind:amount bind:date bind:description />
+  <TransactionForm bind:amount bind:date bind:description />
 
   <div class="flex justify-between pt-1">
     <button
