@@ -1,12 +1,13 @@
 <script>
-	import { onMount } from 'svelte';
-	import './layout.css';
+	import { onMount, setContext } from 'svelte';
 	import { pwaInfo } from 'virtual:pwa-info';
-	import { Repository } from '$lib/api';
-	import { setContext } from 'svelte';
-	import Modal from '$components/Modal.svelte';
-	import Header from '$components/Header.svelte';
 	import { page } from '$app/state';
+
+	import { Repository } from '$lib/api';
+	import Header from '$components/Header.svelte';
+	import Modal from '$components/Modal.svelte';
+
+	import './layout.css';
 
 	let webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
 

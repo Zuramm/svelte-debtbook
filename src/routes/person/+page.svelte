@@ -1,12 +1,11 @@
 <script>
-	import TransactionList from '$components/TransactionList.svelte';
-	import TransactionCreateButton from '$components/TransactionCreateButton.svelte';
 	import { getContext, onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
+
+	import Spinner from '$components/icons/spinner.svelte';
+	import TransactionCreateButton from '$components/TransactionCreateButton.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { getLocale } from '$lib/paraglide/runtime';
-	import { today } from '$lib/stores';
-	import Spinner from '$components/icons/spinner.svelte';
-	import { fly } from 'svelte/transition';
 
 	/** @type {{person: number}} */
 	const { person } = $props();
