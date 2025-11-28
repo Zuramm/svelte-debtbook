@@ -17,7 +17,7 @@ export default defineConfig({
 			manifest: {
 				name: 'My Offline App',
 				short_name: 'OfflineApp',
-				start_url: '/',
+				start_url: '/person',
 				display: 'standalone',
 				theme_color: '#ffffff',
 				background_color: '#ffffff',
@@ -40,7 +40,7 @@ export default defineConfig({
 				// It tells the service worker to cache EVERYTHING in the build folder.
 				globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
 				// Configure navigation fallback to use index.html for SPA routing
-				navigateFallback: '/index.html',
+				navigateFallback: '/person/index.html',
 				navigateFallbackDenylist: [/^\/_/]
 			}
 		})

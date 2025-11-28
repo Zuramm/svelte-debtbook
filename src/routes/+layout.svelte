@@ -5,18 +5,27 @@
 	import { Repository } from '$lib/api';
 	import { setContext } from 'svelte';
 	import Modal from '$components/Modal.svelte';
-	import { m } from '$lib/paraglide/messages';
-	import { locales, setLocale } from '$lib/paraglide/runtime';
+	import Header from '$components/Header.svelte';
+	import { page } from '$app/state';
 
-	let webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '')
-	
+	let webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
+
 	let { children } = $props();
+
+	/** @type {'people' | 'settings' | undefined} */
+	let active = $derived(
+		page.url.pathname === '/person'
+			? 'people'
+			: page.url.pathname === '/settings'
+				? 'settings'
+				: undefined
+	);
 
 	setContext('debtbook', new Repository());
 
 	onMount(async () => {
 		if (pwaInfo) {
-			const { registerSW } = await import('virtual:pwa-register')
+			const { registerSW } = await import('virtual:pwa-register');
 			registerSW({
 				immediate: true,
 				onRegistered(r) {
@@ -25,43 +34,25 @@
 					//    console.log('Checking for sw update')
 					//    r.update()
 					// }, 20000 /* 20s for testing purposes */)
-					console.log(`SW Registered: ${r}`)
+					console.log(`SW Registered: ${r}`);
 				},
 				onRegisterError(error) {
-					console.log('SW registration error', error)
+					console.log('SW registration error', error);
 				}
-			})
+			});
 		}
-	})
+	});
 </script>
 
 <svelte:head>
 	{@html webManifestLink}
 </svelte:head>
 
-<div
-    class="h-screen bg-green-100 overflow-auto relative font-mono bg-arrows pb-24 md:pb-12"
-  >
-    <div class="bg-green-50 sticky top-0">
-      <div class="max-w-lg mx-auto p-4 space-y-4">
-        <div class="flex justify-between flex-row">
-          <div class="flex-1 flex space-x-2">
-            <h1 class="w-100 flex-none font-bold text-4xl text-green-900">
-              {m.app_title()}
-            </h1>
-			{#each locales as locale}
-				<button onclick={() => setLocale(locale)} class="transition-colors rounded-md px-2 py-1 bg-green-200 text-green-900 hover:bg-green-300">{locale}</button>
-			{/each}
-            <!-- {#if queryClient.isFetching()}
-              <Spinner className="mx-4 w-5 text-green-600" />
-            {/if} -->
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="max-w-lg mx-auto p-4 space-y-4">
+<div class="bg-arrows relative h-screen overflow-auto bg-green-100 pb-24 font-mono md:pb-12">
+	<Header {active} />
+	<div class="mx-auto max-w-lg space-y-4 p-4">
 		{@render children()}
-    </div>
-  </div>
+	</div>
+</div>
 
-  <Modal />
+<Modal />

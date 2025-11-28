@@ -1,6 +1,6 @@
 /**
  * Delay for a given number of milliseconds
- * @param {number} ms 
+ * @param {number} ms
  * @returns {Promise<void>}
  */
 function delay(ms) {
@@ -199,7 +199,9 @@ export class Repository extends EventTarget {
 	async personGetPage(page = 0) {
 		await delay(200);
 		const people = this._people.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
-		this.dispatchEvent(new CustomEvent('people-page', { detail: { page: people, pageIndex: page } }));
+		this.dispatchEvent(
+			new CustomEvent('people-page', { detail: { page: people, pageIndex: page } })
+		);
 		return people;
 	}
 
@@ -221,7 +223,7 @@ export class Repository extends EventTarget {
 	 * @param {string} data.name
 	 * @returns {Promise<Person>}
 	 */
-	async createPerson(data) {
+	async personCreate(data) {
 		await delay(200);
 		const newPerson = new Person({ id: this._counters.person++, ...data });
 		this._people.push(newPerson);
@@ -236,7 +238,7 @@ export class Repository extends EventTarget {
 	 * @param {string} data.name
 	 * @returns {Promise<Person>}
 	 */
-	async updatePerson(data) {
+	async personUpdate(data) {
 		await delay(200);
 		const index = this._people.findIndex((item) => item.id === data.id);
 		const newPerson = new Person(data);
@@ -250,7 +252,7 @@ export class Repository extends EventTarget {
 	 * @param {number} id
 	 * @returns {Promise<Person>}
 	 */
-	async deletePerson(id) {
+	async personDelete(id) {
 		await delay(200);
 		const index = this._people.findIndex((item) => item.id === id);
 		const person = this._people.splice(index, 1)[0];
@@ -283,7 +285,9 @@ export class Repository extends EventTarget {
 		const totalDebt = this._transaction
 			.filter((item) => item.person_id === person_id && item.timestamp <= now)
 			.reduce((acc, item) => acc + item.amount, 0);
-		this.dispatchEvent(new CustomEvent('transaction-total-debt-by-person', { detail: { totalDebt } }));
+		this.dispatchEvent(
+			new CustomEvent('transaction-total-debt-by-person', { detail: { totalDebt } })
+		);
 		return totalDebt;
 	}
 
@@ -298,7 +302,9 @@ export class Repository extends EventTarget {
 		const transactions = this._transaction
 			.filter((item) => item.person_id === person_id)
 			.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
-		this.dispatchEvent(new CustomEvent('transactions-page', { detail: { transactions, page, person_id } }));
+		this.dispatchEvent(
+			new CustomEvent('transactions-page', { detail: { transactions, page, person_id } })
+		);
 		return transactions;
 	}
 
@@ -327,7 +333,9 @@ export class Repository extends EventTarget {
 		await delay(200);
 		const newTransaction = new Transaction({ id: this._counters.transaction++, ...data });
 		this._transaction.push(newTransaction);
-		this.dispatchEvent(new CustomEvent('transaction-create', { detail: { transaction: newTransaction } }));
+		this.dispatchEvent(
+			new CustomEvent('transaction-create', { detail: { transaction: newTransaction } })
+		);
 		return newTransaction;
 	}
 
@@ -346,7 +354,9 @@ export class Repository extends EventTarget {
 		const index = this._transaction.findIndex((item) => item.id === data.id);
 		const newTransaction = new Transaction(data);
 		this._transaction[index] = newTransaction;
-		this.dispatchEvent(new CustomEvent('transaction-update', { detail: { transaction: newTransaction } }));
+		this.dispatchEvent(
+			new CustomEvent('transaction-update', { detail: { transaction: newTransaction } })
+		);
 		return newTransaction;
 	}
 
