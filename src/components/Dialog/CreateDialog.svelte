@@ -18,7 +18,7 @@
   }
 
   function oncreate() {
-    debtbook.create({ person_id: 1, amount, timestamp: date.getTime(), description });
+    debtbook.transactionCreate({ person_id: 1, amount: Math.round(amount * 100), timestamp: date.getTime(), description });
     $modal = undefined;
   }
 </script>

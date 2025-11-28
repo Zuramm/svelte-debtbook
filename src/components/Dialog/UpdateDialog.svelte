@@ -23,7 +23,7 @@
   }
 
   function onupdate() {
-    debtbook.transactionUpdate({ id: ref, person_id: 1, amount, timestamp: date.getTime(), description });
+    debtbook.transactionUpdate({ id: ref, person_id: 1, amount: Math.round(amount * 100), timestamp: date.getTime(), description });
     $modal = undefined;
   }
 </script>

@@ -1,3 +1,14 @@
+/**
+ * Delay for a given number of milliseconds
+ * @param {number} ms 
+ * @returns {Promise<void>}
+ */
+function delay(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export const PAGE_SIZE = 100;
+
 export class Person {
 	/**
 	 * Create a new person
@@ -30,8 +41,9 @@ export class Transaction {
 	}
 }
 
-export class Repository {
+export class Repository extends EventTarget {
 	constructor() {
+		super();
 		this._counters = {
 			transaction: 77,
 			person: 2
@@ -185,7 +197,10 @@ export class Repository {
 	}
 
 	async personGetPage(page = 0) {
-		return this._people.slice(page * 100, (page + 1) * 100);
+		await delay(200);
+		const people = this._people.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+		this.dispatchEvent(new CustomEvent('people-page', { detail: { page: people, pageIndex: page } }));
+		return people;
 	}
 
 	/**
@@ -194,7 +209,10 @@ export class Repository {
 	 * @returns {Promise<Person|undefined>}
 	 */
 	async personGet(id) {
-		return this._people.find((item) => item.id === id);
+		await delay(200);
+		const person = this._people.find((item) => item.id === id);
+		this.dispatchEvent(new CustomEvent('person-get', { detail: { person } }));
+		return person;
 	}
 
 	/**
@@ -204,8 +222,10 @@ export class Repository {
 	 * @returns {Promise<Person>}
 	 */
 	async createPerson(data) {
+		await delay(200);
 		const newPerson = new Person({ id: this._counters.person++, ...data });
 		this._people.push(newPerson);
+		this.dispatchEvent(new CustomEvent('person-create', { detail: { person: newPerson } }));
 		return newPerson;
 	}
 
@@ -217,9 +237,11 @@ export class Repository {
 	 * @returns {Promise<Person>}
 	 */
 	async updatePerson(data) {
+		await delay(200);
 		const index = this._people.findIndex((item) => item.id === data.id);
 		const newPerson = new Person(data);
 		this._people[index] = newPerson;
+		this.dispatchEvent(new CustomEvent('person-update', { detail: { person: newPerson } }));
 		return newPerson;
 	}
 
@@ -229,8 +251,10 @@ export class Repository {
 	 * @returns {Promise<Person>}
 	 */
 	async deletePerson(id) {
+		await delay(200);
 		const index = this._people.findIndex((item) => item.id === id);
 		const person = this._people.splice(index, 1)[0];
+		this.dispatchEvent(new CustomEvent('person-delete', { detail: { person } }));
 		return person;
 	}
 
@@ -239,10 +263,13 @@ export class Repository {
 	 * @returns {Promise<number>}
 	 */
 	async transactionGetTotalDebt() {
+		await delay(200);
 		const now = Date.now();
-		return this._transaction
+		const totalDebt = this._transaction
 			.filter((item) => item.timestamp <= now)
 			.reduce((acc, item) => acc + item.amount, 0);
+		this.dispatchEvent(new CustomEvent('transaction-total-debt', { detail: { totalDebt } }));
+		return totalDebt;
 	}
 
 	/**
@@ -251,10 +278,13 @@ export class Repository {
 	 * @returns {Promise<number>}
 	 */
 	async transactionGetTotalDebtByPerson(person_id) {
+		await delay(200);
 		const now = Date.now();
-		return this._transaction
+		const totalDebt = this._transaction
 			.filter((item) => item.person_id === person_id && item.timestamp <= now)
 			.reduce((acc, item) => acc + item.amount, 0);
+		this.dispatchEvent(new CustomEvent('transaction-total-debt-by-person', { detail: { totalDebt } }));
+		return totalDebt;
 	}
 
 	/**
@@ -264,9 +294,12 @@ export class Repository {
 	 * @returns {Promise<Transaction[]>}
 	 */
 	async transactionGetPageByPerson(person_id, page = 0) {
-		return this._transaction
+		await delay(200);
+		const transactions = this._transaction
 			.filter((item) => item.person_id === person_id)
-			.slice(page * 100, (page + 1) * 100);
+			.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+		this.dispatchEvent(new CustomEvent('transactions-page', { detail: { transactions, page, person_id } }));
+		return transactions;
 	}
 
 	/**
@@ -275,7 +308,10 @@ export class Repository {
 	 * @returns {Promise<Transaction|undefined>}
 	 */
 	async transactionGet(id) {
-		return this._transaction.find((item) => item.id === id);
+		await delay(200);
+		const transaction = this._transaction.find((item) => item.id === id);
+		this.dispatchEvent(new CustomEvent('transaction-get', { detail: { transaction } }));
+		return transaction;
 	}
 
 	/**
@@ -287,9 +323,11 @@ export class Repository {
 	 * @param {number} data.timestamp in milliseconds since epoch
 	 * @returns {Promise<Transaction>}
 	 */
-	async create(data) {
+	async transactionCreate(data) {
+		await delay(200);
 		const newTransaction = new Transaction({ id: this._counters.transaction++, ...data });
 		this._transaction.push(newTransaction);
+		this.dispatchEvent(new CustomEvent('transaction-create', { detail: { transaction: newTransaction } }));
 		return newTransaction;
 	}
 
@@ -304,9 +342,11 @@ export class Repository {
 	 * @returns {Promise<Transaction>}
 	 */
 	async transactionUpdate(data) {
+		await delay(200);
 		const index = this._transaction.findIndex((item) => item.id === data.id);
 		const newTransaction = new Transaction(data);
 		this._transaction[index] = newTransaction;
+		this.dispatchEvent(new CustomEvent('transaction-update', { detail: { transaction: newTransaction } }));
 		return newTransaction;
 	}
 
@@ -316,8 +356,10 @@ export class Repository {
 	 * @returns {Promise<Transaction>}
 	 */
 	async transactionDelete(id) {
+		await delay(200);
 		const index = this._transaction.findIndex((item) => item.id === id);
 		const transaction = this._transaction.splice(index, 1)[0];
+		this.dispatchEvent(new CustomEvent('transaction-delete', { detail: { transaction } }));
 		return transaction;
 	}
 }

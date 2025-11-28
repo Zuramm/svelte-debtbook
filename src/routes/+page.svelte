@@ -37,17 +37,34 @@
   /** @type {string[]} */
   let errors = $state([]);
 
-  onMount(async () => {
-    try {
-      transactions = await debtbook.transactionGetPageByPerson(1);
-    } catch (error) {
-      if (error instanceof Error) {
-        errors.push(m.index_list_error({ message: error.message }));
-      } else if (error) {
-        errors.push(m.index_list_error({ message: error.toString() }));
-      }
-    }
-    isLoading = false;
+  function update() {
+    isLoading = true;
+    errors = [];
+    debtbook.transactionGetPageByPerson(1).then((newTransactions) => {
+      transactions = newTransactions;
+      isLoading = false;
+    }).catch((error) => {
+      errors.push(m.index_list_error({ message: error.message }));
+      isLoading = false;
+    });
+  }
+
+  onMount(() => {
+    update();
+
+    debtbook.addEventListener('transaction-page', update);
+    debtbook.addEventListener('transaction-get', update);
+    debtbook.addEventListener('transaction-create', update);
+    debtbook.addEventListener('transaction-update', update);
+    debtbook.addEventListener('transaction-delete', update);
+
+    return () => {
+      debtbook.removeEventListener('transaction-page', update);
+      debtbook.removeEventListener('transaction-get', update);
+      debtbook.removeEventListener('transaction-create', update);
+      debtbook.removeEventListener('transaction-update', update);
+      debtbook.removeEventListener('transaction-delete', update);
+    };
   });
 
   let [pastData, futureData] = $derived(groupTransactions(transactions, $today.getTime()));
