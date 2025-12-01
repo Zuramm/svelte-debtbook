@@ -4,8 +4,6 @@
 	import { page } from '$app/state';
 
 	import { Repository } from '$lib/api';
-	import { modal } from '$lib/stores';
-	import SignInDialog from '$components/dialog/SignInDialog.svelte';
 	import Header from '$components/Header.svelte';
 	import Modal from '$components/Modal.svelte';
 
@@ -13,7 +11,7 @@
 
 	let webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
 
-	let { children } = $props();
+	let { children, data } = $props();
 
 	/** @type {'people' | 'settings' | undefined} */
 	let active = $derived(
@@ -23,8 +21,6 @@
 				? 'settings'
 				: undefined
 	);
-
-	let isAuthenticated = $state(false);
 
 	setContext('debtbook', new Repository());
 
@@ -46,8 +42,6 @@
 				}
 			});
 		}
-
-		$modal = [SignInDialog, {}];
 	});
 </script>
 
@@ -56,16 +50,10 @@
 </svelte:head>
 
 <div class="bg-arrows relative h-screen overflow-auto bg-green-100 pb-24 font-mono md:pb-12">
-	<Header {isAuthenticated} {active} />
+	<Header isAuthenticated={data.session != null} {active} />
 	<div class="mx-auto max-w-lg space-y-4 p-4">
-		{#if isAuthenticated}
-			{@render children()}
-		{:else}
-			<SignInDialog />
-		{/if}
+		{@render children()}
 	</div>
 </div>
 
-{#if isAuthenticated}
-	<Modal />
-{/if}
+<Modal />
