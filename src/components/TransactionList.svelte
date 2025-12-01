@@ -2,18 +2,16 @@
 	import TransactionCard from '$components/TransactionCard.svelte';
 	import { getLocale } from '$lib/paraglide/runtime';
 
-	/** @type {{ transactions: import("$lib/api").Transaction[], showFirstTitle?: boolean }} */
+	/** @type {{ transactions: {id: number, amount: number | null, description: string | null, occured_at: string | null}[], showFirstTitle?: boolean }} */
 	let { transactions, showFirstTitle = true } = $props();
 
 	let data = $derived(
 		(() => {
-			/** Group transactions by "YYYY-MM" @type {Record<string, import("$lib/api").Transaction[]>} */
+			/** Group transactions by "YYYY-MM" @type {Record<string, {id: number, amount: number | null, description: string | null, occured_at: string | null}[]>} */
 			const groups = {};
 			if (transactions) {
 				for (const transaction of transactions) {
-					const monthKey = new Date(transaction.timestamp)
-						.toISOString()
-						.substring(0, 'YYYY-MM'.length);
+					const monthKey = transaction.occured_at?.substring(0, 'YYYY-MM'.length) ?? '';
 					if (!groups[monthKey]) groups[monthKey] = [];
 					groups[monthKey].push(transaction);
 				}
@@ -24,11 +22,11 @@
 			const result = pairs.map(([date, months]) => {
 				const sorted = [...months]
 					.sort((a, b) => {
-						if (a.timestamp < b.timestamp) return -1;
-						if (a.timestamp > b.timestamp) return 1;
+						if (a.occured_at && b.occured_at && a.occured_at < b.occured_at) return -1;
+						if (!a.occured_at || !b.occured_at || a.occured_at > b.occured_at) return 1;
 						// fallback to description string comparison
-						if (a.description < b.description) return -1;
-						if (a.description > b.description) return 1;
+						if (a.description && b.description && a.description < b.description) return -1;
+						if (!a.description || !b.description || a.description > b.description) return 1;
 						return 0;
 					})
 					.reverse();
@@ -51,7 +49,7 @@
 		<TransactionCard
 			ref={transaction.id}
 			amount={transaction.amount}
-			date={new Date(transaction.timestamp)}
+			date={transaction.occured_at ? new Date(transaction.occured_at) : null}
 			description={transaction.description}
 		/>
 	{/each}

@@ -5,17 +5,17 @@
 	import { getLocale } from '$lib/paraglide/runtime';
 	import { modal } from '$lib/stores';
 
-	/** @type {{ ref: number, amount: number, date: Date, description: string }} */
+	/** @type {{ ref: number, amount: number | null, date: Date | null, description: string | null }} */
 	let { ref, amount, date, description } = $props();
 
-	let isInFuture = $derived(date > new Date());
+	let isInFuture = $derived(!date || date > new Date());
 
 	function openUpdateDialog() {
 		$modal = [
 			UpdateDialog,
 			{
 				ref,
-				amount: amount / 100,
+				amount: amount ? amount / 100 : 0,
 				date,
 				description
 			}
@@ -51,14 +51,17 @@
 		{/if}
 		<br />
 		<span class="text-gray-400 {isInFuture ? 'text-gray-500' : ''}"
-			>{new Date(date).toLocaleDateString(getLocale())}</span
+			>{date ? new Date(date).toLocaleDateString(getLocale()) : '--'}</span
 		>
 	</p>
 	<p
 		class="flex-shrink-0 text-right"
-		class:text-red-600={!isInFuture && amount < 0}
-		class:text-green-600={!isInFuture && amount > 0}
+		class:text-red-600={!isInFuture && amount && amount < 0}
+		class:text-green-600={!isInFuture && amount && amount > 0}
 	>
-		{(amount / 100).toLocaleString(getLocale(), { style: 'currency', currency: 'EUR' })}
+		{(amount ? amount / 100 : 0).toLocaleString(getLocale(), {
+			style: 'currency',
+			currency: 'EUR'
+		})}
 	</p>
 </div>

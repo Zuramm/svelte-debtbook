@@ -17,7 +17,7 @@ const handleParaglide = ({ event, resolve }) =>
 /** @type {Handle} */
 const handleSupabase = ({ event, resolve }) => {
 	event.locals.supabase =
-		/** @type {import('@supabase/supabase-js').SupabaseClient<import('./database.types').Database>} */ (
+		/** @type {import('@supabase/supabase-js').SupabaseClient<import('./database').Database>} */ (
 			createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY, {
 				cookies: {
 					getAll() {
