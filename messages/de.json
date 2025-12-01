@@ -14,5 +14,14 @@
 	"transaction_form_date": "Datum",
 	"transaction_form_amount": "Betrag",
 	"transaction_form_amount_negative": "du schuldest jemandem {amount}",
-	"transaction_form_amount_positive": "jemand schuldet dir {amount}"
+	"transaction_form_amount_positive": "jemand schuldet dir {amount}",
+	"sign_in_dialog_title_sign_in": "Anmelden",
+	"sign_in_dialog_email": "E-Mail",
+	"sign_in_dialog_password": "Password",
+	"sign_in_dialog_confirm_password": "Passwort bestätigen",
+	"sign_in_dialog_title_sign_up": "Konto erstellen",
+	"sign_in_dialog_signin": "Anmelden",
+	"sign_in_dialog_signup": "Konto erstellen",
+	"sign_in_dialog_no_account": "Noch kein Konto?",
+	"sign_in_dialog_already_have_account": "Bereits ein Konto?"
 }

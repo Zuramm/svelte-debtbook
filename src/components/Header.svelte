@@ -2,8 +2,8 @@
 	import { m } from '$lib/paraglide/messages';
 	import { locales, setLocale } from '$lib/paraglide/runtime';
 
-	/** @type {{ active?: 'people' | 'settings' | undefined }} */
-	let { active = undefined } = $props();
+	/** @type {{ isAuthenticated: boolean, active?: 'people' | 'settings' | undefined }} */
+	let { isAuthenticated = false, active = undefined } = $props();
 </script>
 
 <div class="sticky top-0 bg-green-50">
@@ -13,20 +13,22 @@
 				<h1 class="flex-none grow text-4xl font-bold text-green-900">
 					{m.app_title()}
 				</h1>
-				<a
-					href="/person"
-					class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 {active ===
-					'people'
-						? 'bg-green-200 decoration-wavy'
-						: ''}">People</a
-				>
-				<a
-					href="/settings"
-					class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 {active ===
-					'settings'
-						? 'bg-green-200 decoration-wavy'
-						: ''}">Settings</a
-				>
+				{#if isAuthenticated}
+					<a
+						href="/person"
+						class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 {active ===
+						'people'
+							? 'bg-green-200 decoration-wavy'
+							: ''}">People</a
+					>
+					<a
+						href="/settings"
+						class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 {active ===
+						'settings'
+							? 'bg-green-200 decoration-wavy'
+							: ''}">Settings</a
+					>
+				{/if}
 				{#each locales as locale}
 					<button
 						onclick={() => setLocale(locale)}

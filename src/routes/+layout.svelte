@@ -4,6 +4,8 @@
 	import { page } from '$app/state';
 
 	import { Repository } from '$lib/api';
+	import { modal } from '$lib/stores';
+	import SignInDialog from '$components/dialog/SignInDialog.svelte';
 	import Header from '$components/Header.svelte';
 	import Modal from '$components/Modal.svelte';
 
@@ -21,6 +23,8 @@
 				? 'settings'
 				: undefined
 	);
+
+	let isAuthenticated = $state(false);
 
 	setContext('debtbook', new Repository());
 
@@ -42,6 +46,8 @@
 				}
 			});
 		}
+
+		$modal = [SignInDialog, {}];
 	});
 </script>
 
@@ -50,10 +56,16 @@
 </svelte:head>
 
 <div class="bg-arrows relative h-screen overflow-auto bg-green-100 pb-24 font-mono md:pb-12">
-	<Header {active} />
+	<Header {isAuthenticated} {active} />
 	<div class="mx-auto max-w-lg space-y-4 p-4">
-		{@render children()}
+		{#if isAuthenticated}
+			{@render children()}
+		{:else}
+			<SignInDialog />
+		{/if}
 	</div>
 </div>
 
-<Modal />
+{#if isAuthenticated}
+	<Modal />
+{/if}

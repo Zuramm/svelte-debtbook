@@ -19,5 +19,14 @@
 	"debt_form_date": "Date",
 	"debt_form_amount": "Amount",
 	"debt_form_amount_negative": "you owe someone {amount}",
-	"debt_form_amount_positive": "someone owes you {amount}"
+	"debt_form_amount_positive": "someone owes you {amount}",
+	"sign_in_dialog_title_sign_in": "Sign In",
+	"sign_in_dialog_email": "Email",
+	"sign_in_dialog_password": "Password",
+	"sign_in_dialog_confirm_password": "Confirm Password",
+	"sign_in_dialog_title_sign_up": "Create an Account",
+	"sign_in_dialog_signin": "Sign In",
+	"sign_in_dialog_signup": "Create an Account",
+	"sign_in_dialog_no_account": "Don't have an account?",
+	"sign_in_dialog_already_have_account": "Already have an account?"
 }

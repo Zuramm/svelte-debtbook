@@ -196,6 +196,11 @@ export class Repository extends EventTarget {
 		].map((data) => new Transaction(data));
 	}
 
+	/**
+	 * Get a page of people
+	 * @param {number} page
+	 * @returns {Promise<Person[]>}
+	 */
 	async personGetPage(page = 0) {
 		await delay(200);
 		const people = this._people.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
