@@ -16,24 +16,27 @@ const handleParaglide = ({ event, resolve }) =>
 
 /** @type {Handle} */
 const handleSupabase = ({ event, resolve }) => {
-	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY, {
-		cookies: {
-			getAll() {
-				return event.cookies.getAll();
-			},
-			setAll(cookiesToSet) {
-				/**
-				 * Note: You have to add the `path` variable to the
-				 * set and remove method due to sveltekit's cookie API
-				 * requiring this to be set, setting the path to an empty string
-				 * will replicate previous/standard behavior (https://kit.svelte.dev/docs/types#public-types-cookies)
-				 */
-				cookiesToSet.forEach(({ name, value, options }) =>
-					event.cookies.set(name, value, { ...options, path: '/' })
-				);
-			}
-		}
-	});
+	event.locals.supabase =
+		/** @type {import('@supabase/supabase-js').SupabaseClient<import('./database.types').Database>} */ (
+			createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY, {
+				cookies: {
+					getAll() {
+						return event.cookies.getAll();
+					},
+					setAll(cookiesToSet) {
+						/**
+						 * Note: You have to add the `path` variable to the
+						 * set and remove method due to sveltekit's cookie API
+						 * requiring this to be set, setting the path to an empty string
+						 * will replicate previous/standard behavior (https://kit.svelte.dev/docs/types#public-types-cookies)
+						 */
+						cookiesToSet.forEach(({ name, value, options }) =>
+							event.cookies.set(name, value, { ...options, path: '/' })
+						);
+					}
+				}
+			})
+		);
 
 	/**
 	 * Unlike `supabase.auth.getSession()`, which returns the session _without_
