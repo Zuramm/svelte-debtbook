@@ -9,6 +9,10 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>People - Debtbook</title>
+</svelte:head>
+
 <div class="space-y-4">
 	<!-- {#if errors.length > 0}
 		<div class="space-y-2">
@@ -18,7 +22,7 @@
 		</div>
 	{/if} -->
 
-	<div class="mx-auto flex border-b-2 border-black dark:border-gray-300 px-4">
+	<div class="mx-auto flex border-b-2 border-black px-4 dark:border-gray-300">
 		<p class="flex-1 dark:text-gray-200">{m.index_total()}</p>
 		<p class="dark:text-gray-200">
 			{(data.totalDebt / 100).toLocaleString(getLocale(), {
@@ -31,7 +35,7 @@
 	{#each data.people as person}
 		<a
 			href="/transaction/{person.id}"
-			class="focus:ring-opacity-20 flex cursor-pointer items-center space-x-4 rounded-xl bg-white dark:bg-gray-800 p-6 transition hover:bg-gray-100 dark:hover:bg-gray-700 hover:not-italic focus:ring focus:ring-black dark:focus:ring-gray-400 focus:outline-none"
+			class="focus:ring-opacity-20 flex cursor-pointer items-center space-x-4 rounded-xl bg-white p-6 transition hover:bg-gray-100 hover:not-italic focus:ring focus:ring-black focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-400"
 			in:fly={{ y: 200, duration: 200 }}
 			out:fly={{ y: 200, duration: 200 }}
 		>

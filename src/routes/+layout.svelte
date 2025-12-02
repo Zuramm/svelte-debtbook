@@ -44,6 +44,7 @@
 
 <svelte:head>
 	{@html webManifestLink}
+	<title>Debtbook</title>
 </svelte:head>
 
 <div

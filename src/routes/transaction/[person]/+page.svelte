@@ -37,6 +37,10 @@
 	);
 </script>
 
+<svelte:head>
+	<title>{data.person.find((p) => p.id === personId)?.name ?? ''} - Debtbook</title>
+</svelte:head>
+
 <div class="space-y-4">
 	<!-- {#if errors.length > 0}
 		<div class="space-y-2">

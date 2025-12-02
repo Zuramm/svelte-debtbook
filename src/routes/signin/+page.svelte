@@ -19,6 +19,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Sign in - Debtbook</title>
+</svelte:head>
+
 {#if form?.success}
 	<div class="text-green-500 dark:text-green-400">
 		<p>{JSON.stringify(form.success)}</p>
