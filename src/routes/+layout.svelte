@@ -1,9 +1,8 @@
 <script>
-	import { onMount, setContext } from 'svelte';
+	import { onMount } from 'svelte';
 	import { pwaInfo } from 'virtual:pwa-info';
-	import { page } from '$app/state';
 
-	import { Repository } from '$lib/api';
+	import { page } from '$app/state';
 	import Header from '$components/Header.svelte';
 	import Modal from '$components/Modal.svelte';
 
@@ -21,8 +20,6 @@
 				? 'settings'
 				: undefined
 	);
-
-	setContext('debtbook', new Repository());
 
 	onMount(async () => {
 		if (pwaInfo) {
