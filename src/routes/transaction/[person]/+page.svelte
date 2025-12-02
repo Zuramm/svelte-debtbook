@@ -5,7 +5,10 @@
 	import { getLocale } from '$lib/paraglide/runtime';
 	import { today } from '$lib/stores';
 
-	const { data } = $props();
+	/** @type {import('./$types').PageProps} */
+	const { data, params } = $props();
+
+	let personId = $derived(parseInt(params.person));
 
 	/**
 	 * Group transactions into past and future
@@ -55,7 +58,7 @@
 		</p>
 	</div>
 
-	<TransactionList transactions={pastData} showFirstTitle={futureData.length === 0} />
+	<TransactionList {personId} transactions={pastData} showFirstTitle={futureData.length === 0} />
 </div>
 
-<TransactionCreateButton />
+<TransactionCreateButton {personId} />

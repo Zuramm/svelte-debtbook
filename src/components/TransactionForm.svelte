@@ -45,6 +45,7 @@
 	<input
 		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
 		id="transaction-description"
+		name="description"
 		type="text"
 		bind:value={description}
 	/>
@@ -55,6 +56,7 @@
 	<input
 		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
 		id="transaction-date"
+		name="occured_at"
 		type="date"
 		bind:value={dateInput}
 		onchange={updateDate}
@@ -73,7 +75,11 @@
 	<input
 		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
 		id="transaction-amount"
+		name="amount"
 		type="number"
+		step="0.01"
+		min="-1000000"
+		max="1000000"
 		bind:value={amount}
 	/>
 </div>

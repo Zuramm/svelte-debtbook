@@ -5,8 +5,8 @@
 	import { getLocale } from '$lib/paraglide/runtime';
 	import { modal } from '$lib/stores';
 
-	/** @type {{ ref: number, amount: number | null, date: Date | null, description: string | null }} */
-	let { ref, amount, date, description } = $props();
+	/** @type {{ ref: number, personId?: number, amount: number | null, date: Date | null, description: string | null }} */
+	let { ref, personId = undefined, amount, date, description } = $props();
 
 	let isInFuture = $derived(!date || date > new Date());
 
@@ -15,6 +15,7 @@
 			UpdateDialog,
 			{
 				ref,
+				personId,
 				amount: amount ? amount / 100 : 0,
 				date,
 				description

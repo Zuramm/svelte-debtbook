@@ -2,8 +2,8 @@
 	import TransactionCard from '$components/TransactionCard.svelte';
 	import { getLocale } from '$lib/paraglide/runtime';
 
-	/** @type {{ transactions: {id: number, amount: number | null, description: string | null, occured_at: string | null}[], showFirstTitle?: boolean }} */
-	let { transactions, showFirstTitle = true } = $props();
+	/** @type {{ personId?: number, transactions: {id: number, amount: number | null, description: string | null, occured_at: string | null}[], showFirstTitle?: boolean }} */
+	let { personId = undefined, transactions, showFirstTitle = true } = $props();
 
 	let data = $derived(
 		(() => {
@@ -48,6 +48,7 @@
 	{#each month.data as transaction}
 		<TransactionCard
 			ref={transaction.id}
+			{personId}
 			amount={transaction.amount}
 			date={transaction.occured_at ? new Date(transaction.occured_at) : null}
 			description={transaction.description}

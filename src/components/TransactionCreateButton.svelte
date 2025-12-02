@@ -3,8 +3,11 @@
 	import Plus from '$components/icons/Plus.svelte';
 	import { modal } from '$lib/stores';
 
+	/** @type {{personId?: number}} */
+	let { personId = undefined } = $props();
+
 	function openCreateDialog() {
-		$modal = [CreateDialog, {}];
+		$modal = [CreateDialog, { personId }];
 	}
 </script>
 
