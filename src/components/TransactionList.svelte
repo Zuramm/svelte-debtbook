@@ -41,7 +41,9 @@
 
 {#each data as month, i}
 	{#if i > 0 || showFirstTitle}
-		<h2 class="border-b-2 border-green-600 pt-2 text-2xl text-green-900">
+		<h2
+			class="border-b-2 border-green-600 pt-2 text-2xl text-green-900 dark:border-green-400 dark:text-green-300"
+		>
 			{month.date.toLocaleDateString(getLocale(), { month: 'long' })}
 		</h2>
 	{/if}

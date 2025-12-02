@@ -48,9 +48,9 @@
 
 	<TransactionList transactions={futureData} />
 
-	<div class="mx-auto flex border-b-2 border-black px-4">
-		<p class="flex-1">{m.index_total()}</p>
-		<p>
+	<div class="mx-auto flex border-b-2 border-black px-4 dark:border-gray-300">
+		<p class="flex-1 dark:text-gray-200">{m.index_total()}</p>
+		<p class="dark:text-gray-200">
 			{(data.totalDebt / 100).toLocaleString(getLocale(), {
 				style: 'currency',
 				currency: 'EUR'

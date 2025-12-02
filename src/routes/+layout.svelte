@@ -46,7 +46,9 @@
 	{@html webManifestLink}
 </svelte:head>
 
-<div class="bg-arrows relative h-screen overflow-auto bg-green-100 pb-24 font-mono md:pb-12">
+<div
+	class="bg-arrows relative h-screen overflow-auto bg-green-100 pb-24 font-mono text-black md:pb-12 dark:bg-gray-900 dark:text-white"
+>
 	<Header isAuthenticated={data.session != null} {active} />
 	<div class="mx-auto max-w-lg space-y-4 p-4">
 		{@render children()}

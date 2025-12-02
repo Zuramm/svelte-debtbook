@@ -34,9 +34,9 @@
 </script>
 
 <div
-	class="focus:ring-opacity-20 flex cursor-pointer items-center space-x-4 rounded-xl p-6 transition hover:bg-gray-100 hover:not-italic focus:ring focus:ring-black focus:outline-none {isInFuture
-		? 'bg-opacity-60 bg-white text-gray-600 italic shadow-sm'
-		: 'bg-white shadow-md'}"
+	class="focus:ring-opacity-20 flex cursor-pointer items-center space-x-4 rounded-xl p-6 transition hover:bg-gray-100 hover:not-italic focus:ring focus:ring-black focus:outline-none dark:hover:bg-gray-700 dark:focus:ring-gray-400 {isInFuture
+		? 'bg-opacity-60 dark:bg-opacity-60 bg-white text-gray-600 italic shadow-sm dark:bg-gray-800 dark:text-gray-400'
+		: 'bg-white shadow-md dark:bg-gray-800'}"
 	tabindex="0"
 	onclick={openUpdateDialog}
 	onkeydown={onKeyDown}
@@ -44,21 +44,25 @@
 	in:fly={{ y: 200, duration: 200 }}
 	out:fly={{ y: 200, duration: 200 }}
 >
-	<p class="flex-1">
+	<p class="flex-1 dark:text-gray-200">
 		{#if description}
 			{description}
 		{:else}
 			--
 		{/if}
 		<br />
-		<span class="text-gray-400 {isInFuture ? 'text-gray-500' : ''}"
-			>{date ? new Date(date).toLocaleDateString(getLocale()) : '--'}</span
+		<span
+			class="text-gray-400 dark:text-gray-500 {isInFuture
+				? 'text-gray-500 dark:text-gray-600'
+				: ''}">{date ? new Date(date).toLocaleDateString(getLocale()) : '--'}</span
 		>
 	</p>
 	<p
-		class="flex-shrink-0 text-right"
+		class="flex-shrink-0 text-right dark:text-gray-200"
 		class:text-red-600={!isInFuture && amount && amount < 0}
 		class:text-green-600={!isInFuture && amount && amount > 0}
+		class:dark:text-red-400={!isInFuture && amount && amount < 0}
+		class:dark:text-green-400={!isInFuture && amount && amount > 0}
 	>
 		{(amount ? amount / 100 : 0).toLocaleString(getLocale(), {
 			style: 'currency',

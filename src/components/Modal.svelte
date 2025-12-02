@@ -16,8 +16,7 @@
 
 {#if $modal != undefined}
 	<div
-		class="fixed inset-0 flex items-center justify-center font-mono"
-		style="background: #0002"
+		class="fixed inset-0 flex items-center justify-center font-mono bg-black/10 dark:bg-black/50"
 		onclick={() => ($modal = undefined)}
 		onkeydown={onKeyDown}
 		role="button"

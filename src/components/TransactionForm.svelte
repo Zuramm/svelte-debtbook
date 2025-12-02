@@ -41,9 +41,11 @@
 </script>
 
 <div>
-	<label for="transaction-description">{m.transaction_form_description()}</label>
+	<label for="transaction-description" class="dark:text-gray-200"
+		>{m.transaction_form_description()}</label
+	>
 	<input
-		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
+		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-800 dark:text-white dark:focus:ring-green-600"
 		id="transaction-description"
 		name="description"
 		type="text"
@@ -52,9 +54,9 @@
 </div>
 
 <div>
-	<label for="transaction-date">{m.transaction_form_date()}</label>
+	<label for="transaction-date" class="dark:text-gray-200">{m.transaction_form_date()}</label>
 	<input
-		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
+		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-800 dark:text-white dark:focus:ring-green-600"
 		id="transaction-date"
 		name="occured_at"
 		type="date"
@@ -64,7 +66,7 @@
 </div>
 
 <div>
-	<label for="transaction-amount">
+	<label for="transaction-amount" class="dark:text-gray-200">
 		{m.transaction_form_amount()}
 		{#if amount < 0}
 			({m.transaction_form_amount_negative({ amount: formatAmount(-amount) })})
@@ -73,7 +75,7 @@
 		{/if}
 	</label>
 	<input
-		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
+		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-800 dark:text-white dark:focus:ring-green-600"
 		id="transaction-amount"
 		name="amount"
 		type="number"

@@ -20,26 +20,26 @@
 </script>
 
 {#if form?.success}
-	<div class="text-green-500">
+	<div class="text-green-500 dark:text-green-400">
 		<p>{JSON.stringify(form.success)}</p>
 	</div>
 {/if}
 
 <form
-	class="w-full max-w-lg space-y-4 rounded-xl bg-white p-4 shadow-sm"
+	class="w-full max-w-lg space-y-4 rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800 dark:shadow-gray-700"
 	action={showSignIn ? '?/login' : '?/register'}
 	method="post"
 	use:enhance
 >
 	{#if showSignIn}
-		<h1 class="tex-black text-xl">{m.sign_in_dialog_title_sign_in()}</h1>
+		<h1 class="tex-black text-xl dark:text-white">{m.sign_in_dialog_title_sign_in()}</h1>
 	{:else}
-		<h1 class="tex-black text-xl">{m.sign_in_dialog_title_sign_up()}</h1>
+		<h1 class="tex-black text-xl dark:text-white">{m.sign_in_dialog_title_sign_up()}</h1>
 	{/if}
 	<div>
-		<label for="email">{m.sign_in_dialog_email()}</label>
+		<label for="email" class="dark:text-gray-200">{m.sign_in_dialog_email()}</label>
 		<input
-			class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
+			class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-700 dark:text-white dark:focus:ring-green-600"
 			id="email"
 			name="email"
 			type="email"
@@ -48,9 +48,9 @@
 		/>
 	</div>
 	<div>
-		<label for="password">{m.sign_in_dialog_password()}</label>
+		<label for="password" class="dark:text-gray-200">{m.sign_in_dialog_password()}</label>
 		<input
-			class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
+			class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-700 dark:text-white dark:focus:ring-green-600"
 			id="password"
 			name="password"
 			type="password"
@@ -60,9 +60,11 @@
 	</div>
 	{#if !showSignIn}
 		<div>
-			<label for="confirmPassword">{m.sign_in_dialog_confirm_password()}</label>
+			<label for="confirmPassword" class="dark:text-gray-200"
+				>{m.sign_in_dialog_confirm_password()}</label
+			>
 			<input
-				class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none"
+				class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-700 dark:text-white dark:focus:ring-green-600"
 				id="confirmPassword"
 				name="confirmPassword"
 				type="password"
@@ -72,7 +74,7 @@
 		</div>
 	{/if}
 	{#if form?.error}
-		<div class="text-red-500">
+		<div class="text-red-500 dark:text-red-400">
 			<p>{form.error}</p>
 		</div>
 	{/if}
@@ -92,20 +94,20 @@
 		{/if}
 	</div>
 	{#if showSignIn}
-		<p class="text-center text-sm text-gray-500">
+		<p class="text-center text-sm text-gray-500 dark:text-gray-400">
 			<button
 				type="button"
-				class="rounded-full border-none px-4 py-2 transition hover:text-green-600 focus:ring focus:ring-green-300 focus:outline-none"
+				class="rounded-full border-none px-4 py-2 transition hover:text-green-600 focus:ring focus:ring-green-300 focus:outline-none dark:hover:text-green-400 dark:focus:ring-green-600"
 				onclick={onno_account}
 			>
 				{m.sign_in_dialog_no_account()}
 			</button>
 		</p>
 	{:else}
-		<p class="text-center text-sm text-gray-500">
+		<p class="text-center text-sm text-gray-500 dark:text-gray-400">
 			<button
 				type="button"
-				class="rounded-full border-none px-4 py-2 transition hover:text-green-600 focus:ring focus:ring-green-300 focus:outline-none"
+				class="rounded-full border-none px-4 py-2 transition hover:text-green-600 focus:ring focus:ring-green-300 focus:outline-none dark:hover:text-green-400 dark:focus:ring-green-600"
 				onclick={onalready_have_account}
 			>
 				{m.sign_in_dialog_already_have_account()}

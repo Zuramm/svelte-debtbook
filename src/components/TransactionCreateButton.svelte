@@ -12,8 +12,8 @@
 </script>
 
 <button
-	class="focus:ring-opacity-30 fixed right-5 bottom-5 flex h-16 w-16 items-center justify-center rounded-full border-none bg-green-500 text-3xl text-white shadow-xl transition hover:bg-green-600 focus:ring focus:ring-black focus:outline-none"
-	on:click={openCreateDialog}
+	class="focus:ring-opacity-30 fixed right-5 bottom-5 flex h-16 w-16 items-center justify-center rounded-full border-none bg-green-500 text-3xl text-white shadow-xl transition hover:bg-green-600 focus:ring focus:ring-black focus:outline-none dark:focus:ring-gray-400"
+	onclick={openCreateDialog}
 >
 	<Plus />
 </button>
