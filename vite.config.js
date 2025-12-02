@@ -15,24 +15,28 @@ export default defineConfig({
 		SvelteKitPWA({
 			registerType: 'autoUpdate', // Auto-update the worker when new builds are deployed
 			manifest: {
-				name: 'My Offline App',
-				short_name: 'OfflineApp',
+				name: 'Debtbook',
+				short_name: 'Debtbook',
 				start_url: '/person',
 				display: 'standalone',
-				theme_color: '#ffffff',
-				background_color: '#ffffff',
+				theme_color: '#6EE7B7',
+				background_color: '#dcfce7',
 				icons: [
-					// Icons removed - add them to static/ folder if needed
-					// {
-					// 	src: 'pwa-192x192.png',
-					// 	sizes: '192x192',
-					// 	type: 'image/png'
-					// },
-					// {
-					// 	src: 'pwa-512x512.png',
-					// 	sizes: '512x512',
-					// 	type: 'image/png'
-					// }
+					{ src: '/favicon.svg', type: 'image/svg+xml' },
+					{ src: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+					{ src: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+					{
+						src: '/icon-192-maskable.png',
+						type: 'image/png',
+						sizes: '192x192',
+						purpose: 'maskable'
+					},
+					{
+						src: '/icon-512-maskable.png',
+						type: 'image/png',
+						sizes: '512x512',
+						purpose: 'maskable'
+					}
 				]
 			},
 			workbox: {
