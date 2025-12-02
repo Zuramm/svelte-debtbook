@@ -1,9 +1,14 @@
-import { fail } from '@sveltejs/kit';
+import { fail, error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, params }) {
 	const supabase = locals.supabase;
 	const personId = parseInt(params.person);
+
+	// Validate personId is a valid number
+	if (isNaN(personId)) {
+		throw error(404, 'Person not found');
+	}
 
 	const [personRes, transactionsRes, totalDebtRes] = await Promise.all([
 		supabase.from('person').select('id,name'),
@@ -16,6 +21,7 @@ export async function load({ locals, params }) {
 
 	if (personRes.error) {
 		console.error(personRes.error);
+		throw error(404, 'Person not found');
 	}
 
 	if (transactionsRes.error) {
