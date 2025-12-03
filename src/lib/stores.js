@@ -1,9 +1,6 @@
 /** @import { Component } from 'svelte' */
-/** @import { Writable, Readable } from 'svelte/store' */
-import { writable, readable } from 'svelte/store';
-
-/** @type {Writable<undefined | [Component, Record<string, any>]>} */
-export const modal = writable(undefined);
+/** @import { Readable } from 'svelte/store' */
+import { readable } from 'svelte/store';
 
 /** @type {Readable<Date>} */
 export const today = readable(new Date(), (set) => {

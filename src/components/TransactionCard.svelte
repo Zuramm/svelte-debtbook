@@ -2,25 +2,23 @@
 	import { fly } from 'svelte/transition';
 
 	import UpdateDialog from '$components/dialog/UpdateDialog.svelte';
+	import { openModal } from '$components/Modal.svelte';
 	import { getLocale } from '$lib/paraglide/runtime';
-	import { modal } from '$lib/stores';
+	import { today } from '$lib/stores';
 
 	/** @type {{ ref: number, personId?: number, amount: number | null, date: Date | null, description: string | null }} */
 	let { ref, personId = undefined, amount, date, description } = $props();
 
-	let isInFuture = $derived(!date || date > new Date());
+	let isInFuture = $derived(!date || date > $today);
 
 	function openUpdateDialog() {
-		$modal = [
-			UpdateDialog,
-			{
-				ref,
-				personId,
-				amount: amount ? amount / 100 : 0,
-				date,
-				description
-			}
-		];
+		openModal(UpdateDialog, {
+			ref,
+			personId,
+			amount: amount ? amount / 100 : 0,
+			date,
+			description
+		});
 	}
 
 	/**
@@ -34,9 +32,12 @@
 </script>
 
 <div
-	class="focus:ring-opacity-20 flex cursor-pointer items-center space-x-4 rounded-xl p-6 transition hover:bg-gray-100 hover:not-italic focus:ring focus:ring-black focus:outline-none dark:hover:bg-gray-700 dark:focus:ring-gray-400 {isInFuture
-		? 'bg-opacity-60 dark:bg-opacity-60 bg-white text-gray-600 italic shadow-sm dark:bg-gray-800 dark:text-gray-400'
-		: 'bg-white shadow-md dark:bg-gray-800'}"
+	class={[
+		'focus:ring-opacity-20 flex cursor-pointer items-center space-x-4 rounded-xl p-6 transition hover:bg-gray-100 hover:not-italic focus:ring focus:ring-black focus:outline-none dark:hover:bg-gray-700 dark:focus:ring-gray-400',
+		isInFuture
+			? 'bg-opacity-60 dark:bg-opacity-60 bg-white text-gray-600 italic shadow-sm dark:bg-gray-800 dark:text-gray-400'
+			: 'bg-white shadow-md dark:bg-gray-800'
+	]}
 	tabindex="0"
 	onclick={openUpdateDialog}
 	onkeydown={onKeyDown}
@@ -52,17 +53,16 @@
 		{/if}
 		<br />
 		<span
-			class="text-gray-400 dark:text-gray-500 {isInFuture
-				? 'text-gray-500 dark:text-gray-600'
-				: ''}">{date ? new Date(date).toLocaleDateString(getLocale()) : '--'}</span
+			class={['text-gray-400 dark:text-gray-500', isInFuture && 'text-gray-500 dark:text-gray-600']}
+			>{date ? new Date(date).toLocaleDateString(getLocale()) : '--'}</span
 		>
 	</p>
 	<p
-		class="flex-shrink-0 text-right dark:text-gray-200"
-		class:text-red-600={!isInFuture && amount && amount < 0}
-		class:text-green-600={!isInFuture && amount && amount > 0}
-		class:dark:text-red-400={!isInFuture && amount && amount < 0}
-		class:dark:text-green-400={!isInFuture && amount && amount > 0}
+		class={[
+			'flex-shrink-0 text-right dark:text-gray-200',
+			!isInFuture && amount && amount < 0 && 'text-red-600 dark:text-red-400',
+			!isInFuture && amount && amount > 0 && 'text-green-600 dark:text-green-400'
+		]}
 	>
 		{(amount ? amount / 100 : 0).toLocaleString(getLocale(), {
 			style: 'currency',

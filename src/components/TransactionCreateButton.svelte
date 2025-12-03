@@ -1,13 +1,13 @@
 <script>
 	import CreateDialog from '$components/dialog/CreateDialog.svelte';
 	import Plus from '$components/icons/Plus.svelte';
-	import { modal } from '$lib/stores';
+	import { openModal } from '$components/Modal.svelte';
 
 	/** @type {{personId?: number}} */
 	let { personId = undefined } = $props();
 
 	function openCreateDialog() {
-		$modal = [CreateDialog, { personId }];
+		openModal(CreateDialog, { personId });
 	}
 </script>
 

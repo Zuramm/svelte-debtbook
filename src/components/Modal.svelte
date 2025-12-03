@@ -1,24 +1,50 @@
+<script module>
+	/** @import { Component } from 'svelte' */
+
+	/** @type {{ content: Component | undefined, props: Record<string, any> | undefined }} */
+	const modal = $state({
+		content: undefined,
+		props: undefined
+	});
+
+	/**
+	 * @param {Component} content
+	 * @param {Record<string, any>} props
+	 */
+	export function openModal(content, props = {}) {
+		modal.content = content;
+		modal.props = props;
+	}
+
+	export function closeModal() {
+		modal.content = undefined;
+		modal.props = undefined;
+	}
+</script>
+
 <script>
-	import { modal } from '$lib/stores';
+	function onclick() {
+		closeModal();
+	}
 
 	/**
 	 * @param {KeyboardEvent} event
 	 */
-	function onKeyDown(event) {
+	function onkeydown(event) {
 		if (event.key === 'Escape') {
-			$modal = undefined;
+			closeModal();
 		}
 	}
 
-	let ModalContent = $derived($modal?.[0]);
-	let modalProps = $derived($modal?.[1]);
+	let ModalContent = $derived(modal.content);
+	let modalProps = $derived(modal.props);
 </script>
 
-{#if $modal != undefined}
+{#if modal.content != undefined}
 	<div
-		class="fixed inset-0 flex items-center justify-center font-mono bg-black/10 dark:bg-black/50"
-		onclick={() => ($modal = undefined)}
-		onkeydown={onKeyDown}
+		class="fixed inset-0 flex items-center justify-center bg-black/10 font-mono dark:bg-black/50"
+		{onclick}
+		{onkeydown}
 		role="button"
 		tabindex="0"
 	>

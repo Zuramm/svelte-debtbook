@@ -2,15 +2,15 @@
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
+	import { closeModal } from '$components/Modal.svelte';
 	import TransactionForm from '$components/TransactionForm.svelte';
 	import { m } from '$lib/paraglide/messages';
-	import { modal } from '$lib/stores';
 
 	/** @type {{ personId?: number, amount: number, date: Date, description: string }} */
 	let { personId, amount = $bindable(), date = $bindable(), description = $bindable() } = $props();
 
 	function oncancel() {
-		$modal = undefined;
+		closeModal();
 	}
 </script>
 
