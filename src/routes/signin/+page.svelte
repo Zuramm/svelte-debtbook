@@ -1,6 +1,9 @@
 <script>
 	import { m } from '$lib/paraglide/messages';
 	import { enhance } from '$app/forms';
+	import FilledButton from '$components/ui/FilledButton.svelte';
+	import Input from '$components/ui/Input.svelte';
+	import TextButton from '$components/ui/TextButton.svelte';
 
 	let { form } = $props();
 
@@ -42,33 +45,18 @@
 	{/if}
 	<div>
 		<label for="email" class="dark:text-gray-200">{m.sign_in_dialog_email()}</label>
-		<input
-			class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-700 dark:text-white dark:focus:ring-green-600"
-			id="email"
-			name="email"
-			type="email"
-			bind:value={email}
-			required
-		/>
+		<Input id="email" name="email" type="email" bind:value={email} required />
 	</div>
 	<div>
 		<label for="password" class="dark:text-gray-200">{m.sign_in_dialog_password()}</label>
-		<input
-			class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-700 dark:text-white dark:focus:ring-green-600"
-			id="password"
-			name="password"
-			type="password"
-			bind:value={password}
-			required
-		/>
+		<Input id="password" name="password" type="password" bind:value={password} required />
 	</div>
 	{#if !showSignIn}
 		<div>
 			<label for="confirmPassword" class="dark:text-gray-200"
 				>{m.sign_in_dialog_confirm_password()}</label
 			>
-			<input
-				class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-700 dark:text-white dark:focus:ring-green-600"
+			<Input
 				id="confirmPassword"
 				name="confirmPassword"
 				type="password"
@@ -84,38 +72,26 @@
 	{/if}
 	<div class="flex justify-end pt-1">
 		{#if showSignIn}
-			<button
-				class="rounded-full border-none bg-green-500 px-4 py-2 text-white transition hover:bg-green-600 focus:ring focus:ring-green-300 focus:outline-none"
-			>
+			<FilledButton color="primary">
 				{m.sign_in_dialog_signin()}
-			</button>
+			</FilledButton>
 		{:else}
-			<button
-				class="rounded-full border-none bg-green-500 px-4 py-2 text-white transition hover:bg-green-600 focus:ring focus:ring-green-300 focus:outline-none"
-			>
+			<FilledButton color="primary">
 				{m.sign_in_dialog_signup()}
-			</button>
+			</FilledButton>
 		{/if}
 	</div>
 	{#if showSignIn}
 		<p class="text-center text-sm text-gray-500 dark:text-gray-400">
-			<button
-				type="button"
-				class="rounded-full border-none px-4 py-2 transition hover:text-green-600 focus:ring focus:ring-green-300 focus:outline-none dark:hover:text-green-400 dark:focus:ring-green-600"
-				onclick={onno_account}
-			>
+			<TextButton type="button" color="secondary" onclick={onno_account}>
 				{m.sign_in_dialog_no_account()}
-			</button>
+			</TextButton>
 		</p>
 	{:else}
 		<p class="text-center text-sm text-gray-500 dark:text-gray-400">
-			<button
-				type="button"
-				class="rounded-full border-none px-4 py-2 transition hover:text-green-600 focus:ring focus:ring-green-300 focus:outline-none dark:hover:text-green-400 dark:focus:ring-green-600"
-				onclick={onalready_have_account}
-			>
+			<TextButton type="button" color="secondary" onclick={onalready_have_account}>
 				{m.sign_in_dialog_already_have_account()}
-			</button>
+			</TextButton>
 		</p>
 	{/if}
 </form>

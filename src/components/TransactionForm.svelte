@@ -1,6 +1,7 @@
 <script>
 	import { m } from '$lib/paraglide/messages';
 	import { getLocale } from '$lib/paraglide/runtime';
+	import Input from '$components/ui/Input.svelte';
 
 	/** @type {{ amount: number, date: Date, description: string }} */
 	let { amount = $bindable(), date = $bindable(), description = $bindable() } = $props();
@@ -44,19 +45,12 @@
 	<label for="transaction-description" class="dark:text-gray-200"
 		>{m.transaction_form_description()}</label
 	>
-	<input
-		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-800 dark:text-white dark:focus:ring-green-600"
-		id="transaction-description"
-		name="description"
-		type="text"
-		bind:value={description}
-	/>
+	<Input id="transaction-description" name="description" type="text" bind:value={description} />
 </div>
 
 <div>
 	<label for="transaction-date" class="dark:text-gray-200">{m.transaction_form_date()}</label>
-	<input
-		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-800 dark:text-white dark:focus:ring-green-600"
+	<Input
 		id="transaction-date"
 		name="occured_at"
 		type="date"
@@ -74,8 +68,7 @@
 			({m.transaction_form_amount_positive({ amount: formatAmount(amount) })})
 		{/if}
 	</label>
-	<input
-		class="mt-1 w-full rounded-md border-none bg-gray-50 p-2 shadow-md transition focus:ring focus:ring-green-300 focus:outline-none dark:bg-gray-800 dark:text-white dark:focus:ring-green-600"
+	<Input
 		id="transaction-amount"
 		name="amount"
 		type="number"

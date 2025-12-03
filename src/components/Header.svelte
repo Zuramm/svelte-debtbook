@@ -13,21 +13,20 @@
 				<h1 class="flex-none grow text-4xl font-bold text-green-900 dark:text-green-300">
 					{m.app_title()}
 				</h1>
+				{#snippet navItem(/** @type {string} */ href, /** @type {string} */ label)}
+					<a
+						{href}
+						class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 dark:text-green-300 dark:hover:bg-gray-700 {active ===
+						label
+							? 'bg-green-200 decoration-wavy dark:bg-gray-700'
+							: ''}"
+					>
+						{label}
+					</a>
+				{/snippet}
 				{#if isAuthenticated}
-					<a
-						href="/person"
-						class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 dark:text-green-300 dark:hover:bg-gray-700 {active ===
-						'people'
-							? 'bg-green-200 decoration-wavy dark:bg-gray-700'
-							: ''}">People</a
-					>
-					<a
-						href="/settings"
-						class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 dark:text-green-300 dark:hover:bg-gray-700 {active ===
-						'settings'
-							? 'bg-green-200 decoration-wavy dark:bg-gray-700'
-							: ''}">Settings</a
-					>
+					{@render navItem('/person', 'People')}
+					{@render navItem('/settings', 'Settings')}
 				{/if}
 				{#each locales as locale}
 					<button

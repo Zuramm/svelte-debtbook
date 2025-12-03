@@ -42,7 +42,7 @@
 
 {#if modal.content != undefined}
 	<div
-		class="fixed inset-0 flex items-center justify-center bg-black/10 font-mono dark:bg-black/50"
+		class="fixed inset-0 flex items-center justify-center bg-black/10 font-mono text-black dark:bg-black/50 dark:text-white"
 		{onclick}
 		{onkeydown}
 		role="button"
