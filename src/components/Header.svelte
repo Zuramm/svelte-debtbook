@@ -16,28 +16,28 @@
 				{#if isAuthenticated}
 					<a
 						href="/person"
-						class="rounded-md p-2 text-green-900 dark:text-green-300 underline transition-colors hover:bg-green-200 dark:hover:bg-gray-700 {active ===
+						class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 dark:text-green-300 dark:hover:bg-gray-700 {active ===
 						'people'
-							? 'bg-green-200 dark:bg-gray-700 decoration-wavy'
+							? 'bg-green-200 decoration-wavy dark:bg-gray-700'
 							: ''}">People</a
 					>
 					<a
 						href="/settings"
-						class="rounded-md p-2 text-green-900 dark:text-green-300 underline transition-colors hover:bg-green-200 dark:hover:bg-gray-700 {active ===
+						class="rounded-md p-2 text-green-900 underline transition-colors hover:bg-green-200 dark:text-green-300 dark:hover:bg-gray-700 {active ===
 						'settings'
-							? 'bg-green-200 dark:bg-gray-700 decoration-wavy'
+							? 'bg-green-200 decoration-wavy dark:bg-gray-700'
 							: ''}">Settings</a
 					>
 				{/if}
 				{#each locales as locale}
 					<button
 						onclick={() => setLocale(locale)}
-						class="rounded-md bg-green-200 dark:bg-gray-700 px-2 py-1 text-green-900 dark:text-green-300 transition-colors hover:bg-green-300 dark:hover:bg-gray-600"
+						class="rounded-md bg-green-200 px-2 py-1 text-green-900 transition-colors hover:bg-green-300 dark:bg-gray-700 dark:text-green-300 dark:hover:bg-gray-600"
 						>{locale}</button
 					>
 				{/each}
 				<!-- {#if queryClient.isFetching()}
-                <Spinner className="mx-4 w-5 text-green-600" />
+                <Spinner class="mx-4 w-5 text-green-600" />
             {/if} -->
 			</div>
 		</div>
