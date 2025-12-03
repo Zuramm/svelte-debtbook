@@ -28,5 +28,7 @@
 	"sign_in_dialog_signin": "Sign In",
 	"sign_in_dialog_signup": "Create an Account",
 	"sign_in_dialog_no_account": "Don't have an account?",
-	"sign_in_dialog_already_have_account": "Already have an account?"
+	"sign_in_dialog_already_have_account": "Already have an account?",
+	"settings_title": "Settings - Debtbook",
+	"settings_logout": "Logout"
 }

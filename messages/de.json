@@ -23,5 +23,7 @@
 	"sign_in_dialog_signin": "Anmelden",
 	"sign_in_dialog_signup": "Konto erstellen",
 	"sign_in_dialog_no_account": "Noch kein Konto?",
-	"sign_in_dialog_already_have_account": "Bereits ein Konto?"
+	"sign_in_dialog_already_have_account": "Bereits ein Konto?",
+	"settings_title": "Einstellungen - Debtbook",
+	"settings_logout": "Abmelden"
 }
