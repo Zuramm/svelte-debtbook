@@ -1,53 +1,32 @@
-<script module>
-	/** @import { Component } from 'svelte' */
+<script>
+	import { onMount } from 'svelte';
 
-	/** @type {{ content: Component | undefined, props: Record<string, any> | undefined }} */
-	const modal = $state({
-		content: undefined,
-		props: undefined
+	/** @type {HTMLDialogElement | null} */
+	let dialog = $state(null);
+
+	let { open = $bindable(), children, title = '' } = $props();
+
+	onMount(() => {
+		if (open) {
+			dialog?.showModal();
+		}
 	});
 
-	/**
-	 * @param {Component} content
-	 * @param {Record<string, any>} props
-	 */
-	export function openModal(content, props = {}) {
-		modal.content = content;
-		modal.props = props;
-	}
-
-	export function closeModal() {
-		modal.content = undefined;
-		modal.props = undefined;
-	}
-</script>
-
-<script>
-	function onclick() {
-		closeModal();
-	}
-
-	/**
-	 * @param {KeyboardEvent} event
-	 */
-	function onkeydown(event) {
-		if (event.key === 'Escape') {
-			closeModal();
+	$effect(() => {
+		if (open) {
+			dialog?.showModal();
+		} else {
+			dialog?.close();
 		}
-	}
-
-	let ModalContent = $derived(modal.content);
-	let modalProps = $derived(modal.props);
+	});
 </script>
 
-{#if modal.content != undefined}
-	<div
-		class="fixed inset-0 flex items-center justify-center bg-black/10 font-mono text-black dark:bg-black/50 dark:text-white"
-		{onclick}
-		{onkeydown}
-		role="button"
-		tabindex="0"
-	>
-		<ModalContent {...modalProps} />
-	</div>
-{/if}
+<dialog
+	bind:this={dialog}
+	class="ripped m-auto w-full max-w-lg space-y-4 overflow-auto bg-transparent px-4 py-6 transition-all backdrop:bg-gray-900/50 backdrop:backdrop-blur-md backdrop:backdrop-saturate-50"
+>
+	{#if title}
+		<h1 class="text-xl text-green-500 dark:text-green-400">{title}</h1>
+	{/if}
+	{@render children()}
+</dialog>

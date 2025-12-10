@@ -33,7 +33,7 @@ export async function load({ locals, params }) {
 	}
 
 	return {
-		person: personRes.data ?? [],
+		people: personRes.data ?? [],
 		transactions: transactionsRes.data ?? [],
 		totalDebt: totalDebtRes.data ?? 0
 	};

@@ -3,8 +3,7 @@
 	import { pwaInfo } from 'virtual:pwa-info';
 
 	import { page } from '$app/state';
-	import Header from '$components/Header.svelte';
-	import Modal from '$components/Modal.svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	import './layout.css';
 
@@ -44,16 +43,7 @@
 
 <svelte:head>
 	{@html webManifestLink}
-	<title>Debtbook</title>
+	<title>{m.app_title()}</title>
 </svelte:head>
 
-<div
-	class="bg-arrows relative h-screen overflow-auto bg-green-100 pb-24 font-mono text-black md:pb-12 dark:bg-gray-900 dark:text-white"
->
-	<Header isAuthenticated={data.session != null} {active} />
-	<div class="mx-auto max-w-lg space-y-4 p-4">
-		{@render children()}
-	</div>
-</div>
-
-<Modal />
+{@render children()}

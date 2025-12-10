@@ -1,9 +1,17 @@
 <script>
-	import TransactionCard from '$components/TransactionCard.svelte';
 	import { getLocale } from '$lib/paraglide/runtime';
+	import { today } from '$lib/stores';
+	import CurrencyValue from '$components/CurrencyValue.svelte';
 
-	/** @type {{ personId?: number, transactions: {id: number, amount: number | null, description: string | null, occured_at: string | null}[], showFirstTitle?: boolean }} */
-	let { personId = undefined, transactions, showFirstTitle = true } = $props();
+	/** @typedef {{
+	 		id: number, 
+			amount: number | null, 
+			description: string | null, 
+			occured_at: string | null
+		}} Transaction */
+
+	/** @type {{ transactions: Transaction[], showFirstTitle?: boolean, ontransactionclick?: (transaction: Transaction) => void }} */
+	let { transactions, showFirstTitle = true, ontransactionclick } = $props();
 
 	let data = $derived(
 		(() => {
@@ -40,20 +48,43 @@
 </script>
 
 {#each data as month, i (month.date.getTime())}
-	{#if i > 0 || showFirstTitle}
-		<h2
-			class="border-b-2 border-green-600 pt-2 text-2xl text-green-900 dark:border-green-400 dark:text-green-300"
-		>
-			{month.date.toLocaleDateString(getLocale(), { month: 'long' })}
-		</h2>
-	{/if}
-	{#each month.data as transaction (transaction.id)}
-		<TransactionCard
-			ref={transaction.id}
-			{personId}
-			amount={transaction.amount}
-			date={transaction.occured_at ? new Date(transaction.occured_at) : null}
-			description={transaction.description}
-		/>
-	{/each}
+	<section class="focus:ring-opacity-20 ripped divide-y divide-gray-200 py-4 dark:divide-gray-700">
+		{#if i > 0 || showFirstTitle}
+			<h2 class="p-2 text-xl">
+				{month.date.toLocaleDateString(getLocale(), { month: 'long' })}
+			</h2>
+		{/if}
+		{#each month.data as transaction (transaction.id)}
+			{@const isInFuture =
+				!transaction.occured_at ||
+				transaction.occured_at > $today.toISOString().substring(0, 'YYYY-MM-DD'.length)}
+			<button
+				class={[
+					'grid w-full grid-cols-[2fr_auto_1fr_auto] items-center p-2 hover:bg-gray-100 sm:grid-cols-[3fr_auto_1fr_auto] md:grid-cols-[4fr_auto_1fr_auto] dark:hover:bg-gray-700',
+					isInFuture
+						? 'bg-opacity-60 dark:bg-opacity-60 bg-white text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+						: 'bg-white dark:bg-gray-800'
+				]}
+				onclick={() => ontransactionclick?.(transaction)}
+			>
+				<span class="text-left dark:text-gray-200">
+					{#if transaction.description}
+						{transaction.description}
+					{:else}
+						--
+					{/if}
+				</span>
+				<span
+					class={[
+						'text-right text-gray-400 dark:text-gray-500',
+						isInFuture && 'text-gray-500 dark:text-gray-600'
+					]}
+					>{transaction.occured_at
+						? new Date(transaction.occured_at).toLocaleDateString(getLocale())
+						: '--'}</span
+				>
+				<CurrencyValue amount={transaction.amount} {isInFuture} />
+			</button>
+		{/each}
+	</section>
 {/each}

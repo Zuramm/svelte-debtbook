@@ -2,7 +2,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { enhance } from '$app/forms';
 	import FilledButton from '$components/ui/FilledButton.svelte';
-	import Input from '$components/ui/Input.svelte';
+	import TextInput from '$components/ui/TextInput.svelte';
 	import TextButton from '$components/ui/TextButton.svelte';
 
 	let { form } = $props();
@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-	<title>Sign in - Debtbook</title>
+	<title>{m.route_signin_title()} - {m.app_title()}</title>
 </svelte:head>
 
 {#if form?.success}
@@ -39,26 +39,33 @@
 	use:enhance
 >
 	{#if showSignIn}
-		<h1 class="tex-black text-xl dark:text-white">{m.sign_in_dialog_title_sign_in()}</h1>
+		<h1 class="tex-black text-xl dark:text-white">{m.form_signin_title_sign_in()}</h1>
 	{:else}
-		<h1 class="tex-black text-xl dark:text-white">{m.sign_in_dialog_title_sign_up()}</h1>
+		<h1 class="tex-black text-xl dark:text-white">{m.form_signin_title_sign_up()}</h1>
 	{/if}
 	<div>
-		<label for="email" class="dark:text-gray-200">{m.sign_in_dialog_email()}</label>
-		<Input id="email" name="email" type="email" bind:value={email} required />
+		<TextInput
+			label={m.form_signin_email_label()}
+			name="email"
+			type="email"
+			bind:value={email}
+			required
+		/>
 	</div>
 	<div>
-		<label for="password" class="dark:text-gray-200">{m.sign_in_dialog_password()}</label>
-		<Input id="password" name="password" type="password" bind:value={password} required />
+		<TextInput
+			label={m.form_signin_password_label()}
+			name="password"
+			type="password"
+			bind:value={password}
+			required
+		/>
 	</div>
 	{#if !showSignIn}
 		<div>
-			<label for="confirmPassword" class="dark:text-gray-200"
-				>{m.sign_in_dialog_confirm_password()}</label
-			>
-			<Input
-				id="confirmPassword"
-				name="confirmPassword"
+			<TextInput
+				label={m.form_signin_confirm_password_label()}
+				name="confirm_password"
 				type="password"
 				bind:value={confirmPassword}
 				required
@@ -73,24 +80,24 @@
 	<div class="flex justify-end pt-1">
 		{#if showSignIn}
 			<FilledButton color="primary">
-				{m.sign_in_dialog_signin()}
+				{m.form_signin_button_signin()}
 			</FilledButton>
 		{:else}
 			<FilledButton color="primary">
-				{m.sign_in_dialog_signup()}
+				{m.form_signin_button_signup()}
 			</FilledButton>
 		{/if}
 	</div>
 	{#if showSignIn}
 		<p class="text-center text-sm text-gray-500 dark:text-gray-400">
 			<TextButton type="button" color="secondary" onclick={onno_account}>
-				{m.sign_in_dialog_no_account()}
+				{m.form_signin_button_no_account()}
 			</TextButton>
 		</p>
 	{:else}
 		<p class="text-center text-sm text-gray-500 dark:text-gray-400">
 			<TextButton type="button" color="secondary" onclick={onalready_have_account}>
-				{m.sign_in_dialog_already_have_account()}
+				{m.form_signin_button_already_have_account()}
 			</TextButton>
 		</p>
 	{/if}

@@ -14,25 +14,19 @@
         }} 
      */
 	let { color = 'primary', class: className = '', children, ...restProps } = $props();
-
-	let baseClasses = $derived.by(() => {
-		const base =
-			'transition-colors focus:outline-none rounded-full border-none px-4 py-2 focus:ring';
-
-		switch (color) {
-			case 'secondary':
-				return `${base} bg-gray-500 text-white hover:bg-gray-600 focus:ring-gray-300`;
-
-			case 'danger':
-				return `${base} bg-red-500 text-white hover:bg-red-600 focus:ring-red-300`;
-
-			case 'primary':
-			default:
-				return `${base} bg-green-500 text-white hover:bg-green-600 focus:ring-green-300`;
-		}
-	});
 </script>
 
-<button class="{baseClasses} {className}" {...restProps}>
+<button
+	class={[
+		'group rounded-full border-none px-4 py-2 shadow-md transition-shadow hover:shadow-lg focus:ring focus:outline-none',
+		color === 'primary' && 'bg-emerald-500 text-white shadow-emerald-300/50 focus:ring-emerald-500',
+		color === 'secondary' &&
+			'bg-gray-500 text-white shadow-gray-300/50 hover:bg-gray-600 focus:ring-gray-300',
+		color === 'danger' &&
+			'bg-red-500 text-white shadow-red-300/50 hover:bg-red-600 focus:ring-red-300',
+		className
+	]}
+	{...restProps}
+>
 	{@render children?.()}
 </button>

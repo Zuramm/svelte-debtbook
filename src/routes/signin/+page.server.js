@@ -22,7 +22,7 @@ export const actions = {
 		const formData = await request.formData();
 		const email = formData.get('email');
 		const password = formData.get('password');
-		const confirmPassword = formData.get('confirmPassword');
+		const confirmPassword = formData.get('confirm_password');
 		if (
 			!(typeof email === 'string' && email.length > 0) ||
 			!(typeof password === 'string' && password.length > 0)
