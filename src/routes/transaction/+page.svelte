@@ -135,7 +135,7 @@
 		class="fixed right-4 bottom-24 mt-4 md:hidden"
 		onclick={() => (isCreateModalOpen = true)}
 	>
-		<span class="hio hio-plus align-middle text-2xl" aria-labelledby="create-transaction-button"
+		<span class="hio hio-plus align-middle text-2xl" aria-labelledby="create-transaction-button1"
 		></span>
 		<span id="create-transaction-button1" class="align-middle">{m.route_transaction_create()}</span>
 	</FilledButton>

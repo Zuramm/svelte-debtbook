@@ -38,7 +38,7 @@
 		name="description"
 		bind:value={description}
 	/>
-	<DateInput label={m.form_transaction_date_label()} type="date" name="date" bind:value={date} />
+	<DateInput label={m.form_transaction_date_label()} type="date" name="occured_at" bind:value={date} />
 	<div class="flex justify-end sm:col-span-2">
 		{#if onclose}
 			<TextButton type="button" onclick={onclose}

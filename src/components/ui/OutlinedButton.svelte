@@ -24,7 +24,7 @@
 		color === 'danger' &&
 			'border-red-500 text-red-600 hover:bg-red-500 hover:text-white focus:ring-red-300 dark:border-red-400 dark:text-red-400 dark:hover:bg-red-600 dark:focus:ring-red-600',
 		color === 'primary' &&
-			'border-red-500 text-red-600 hover:bg-red-500 hover:text-white focus:ring-red-300',
+			'border-green-500 text-green-600 hover:bg-green-500 hover:text-white focus:ring-green-300',
 		className
 	]}
 	{...restProps}

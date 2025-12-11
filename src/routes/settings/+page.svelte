@@ -4,7 +4,7 @@
 	import OutlinedButton from '$components/ui/OutlinedButton.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import { m } from '$lib/paraglide/messages';
-	import { getLocale } from '$lib/paraglide/runtime';
+	import { getLocale, setLocale } from '$lib/paraglide/runtime';
 </script>
 
 <svelte:head>
@@ -20,18 +20,22 @@
 		<h2 class="text-2xl font-light text-green-500 dark:text-green-400">
 			{m.route_settings_account_title()}
 		</h2>
-		<form action="?/language" method="post" class="row flex items-end gap-4">
+		<div class="row flex items-end gap-4">
 			<Select
 				class="flex-1"
 				label={m.route_settings_language_label()}
 				name="language"
 				value={getLocale()}
+				onchange={(e) => {
+					const locale = /** @type {HTMLSelectElement|null} */ (e.target)?.value ?? 'en';
+					setLocale(/** @type {'en' | 'de'} */ (locale));
+				}}
 			>
 				<option value="en">English</option>
 				<option value="de">Deutsch</option>
 			</Select>
 			<FilledButton type="submit">{m.route_settings_language_save()}</FilledButton>
-		</form>
+		</div>
 		<form action="?/logout" method="post">
 			<OutlinedButton class="w-full" color="danger">{m.route_settings_logout()}</OutlinedButton>
 		</form>
