@@ -1,4 +1,7 @@
 <script>
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+
 	import CurrencyValue from '$components/CurrencyValue.svelte';
 	import CreateDialog from '$components/form/CreateTransactionForm.svelte';
 	import UpdateDialog from '$components/form/UpdateTransactionForm.svelte';
@@ -6,19 +9,30 @@
 	import Navigation from '$components/Navigation.svelte';
 	import TransactionList from '$components/TransactionList.svelte';
 	import FilledButton from '$components/ui/FilledButton.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { today } from '$lib/stores';
 
 	/** @type {import('./$types').PageProps} */
-	const { data, params } = $props();
+	const { data } = $props();
 
-	let personId = $derived(parseInt(params.person));
+	let personId = $derived(
+		((person) => (person ? parseInt(person) : null))(page.url.searchParams.get('person'))
+	);
+
+	/** @typedef {{
+	 		id: number, 
+			person_id: number | null,
+			amount: number | null, 
+			description: string | null, 
+			occured_at: string | null,
+		}} Transaction */
 
 	/**
 	 * Group transactions into past and future
-	 * @param {{id: number, amount: number | null, description: string | null, occured_at: string | null}[]} transactions
+	 * @param {Transaction[]} transactions
 	 * @param {string} today
-	 * @returns {[{id: number, amount: number | null, description: string | null, occured_at: string | null}[], {id: number, amount: number | null, description: string | null, occured_at: string | null}[]]}
+	 * @returns {[Transaction[], Transaction[]]}
 	 */
 	function groupTransactions(transactions, today) {
 		const past = [];
@@ -41,15 +55,34 @@
 	);
 
 	let isCreateModalOpen = $state(false);
-	/** @type {{ id: number, amount: number | null, description: string | null, occured_at: string | null } | null} */
+	/** @type {Transaction | null} */
 	let transactionToUpdate = $state(null);
 </script>
 
 <svelte:head>
-	<title>{data.people.find((p) => p.id === personId)?.name ?? ''} - {m.app_title()}</title>
+	<title
+		>{data.people.find((p) => p.id === personId)?.name ?? m.route_transaction_title()} - {m.app_title()}</title
+	>
 </svelte:head>
 
 <Navigation class="space-y-4 overflow-auto p-4 pb-24 md:mx-auto md:max-w-xl md:pb-12">
+	<section>
+		<Select
+			label={m.form_transaction_person_label()}
+			name="person_id"
+			value={personId ?? ''}
+			onchange={(e) =>
+				goto(
+					`/transaction?person=${/** @type {HTMLSelectElement|null} */ (e.target)?.value ?? ''}`
+				)}
+		>
+			<option value="">{m.form_transaction_person_empty()}</option>
+			{#each data.people as person}
+				<option value={person.id}>{person.name}</option>
+			{/each}
+		</Select>
+	</section>
+
 	<!-- {#if errors.length > 0}
 		<div class="space-y-2">
 			{#each errors as error}
@@ -57,9 +90,9 @@
 			{/each}
 		</div>
 	{/if} -->
-	<h2 class="py-2 text-4xl font-light text-green-500 dark:text-green-400">
+	<h1 class="py-2 text-4xl font-light text-green-500 dark:text-green-400">
 		{m.route_transaction_title()}
-	</h2>
+	</h1>
 
 	<TransactionList transactions={futureData} />
 
@@ -89,11 +122,11 @@
 	<Modal open={transactionToUpdate !== null}>
 		<UpdateDialog
 			id={transactionToUpdate?.id ?? 0}
-			{personId}
+			personId={transactionToUpdate?.person_id}
 			people={data.people}
-			amount={transactionToUpdate?.amount ?? 0}
+			amount={transactionToUpdate?.amount}
 			date={transactionToUpdate?.occured_at ? new Date(transactionToUpdate.occured_at) : new Date()}
-			description={transactionToUpdate?.description ?? ''}
+			description={transactionToUpdate?.description}
 			onclose={() => (transactionToUpdate = null)}
 		/>
 	</Modal>

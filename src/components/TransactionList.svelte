@@ -5,9 +5,10 @@
 
 	/** @typedef {{
 	 		id: number, 
+			person_id: number | null,
 			amount: number | null, 
 			description: string | null, 
-			occured_at: string | null
+			occured_at: string | null,
 		}} Transaction */
 
 	/** @type {{ transactions: Transaction[], showFirstTitle?: boolean, ontransactionclick?: (transaction: Transaction) => void }} */
@@ -15,7 +16,7 @@
 
 	let data = $derived(
 		(() => {
-			/** Group transactions by "YYYY-MM" @type {Record<string, {id: number, amount: number | null, description: string | null, occured_at: string | null}[]>} */
+			/** Group transactions by "YYYY-MM" @type {Record<string, Transaction[]>} */
 			const groups = {};
 			if (transactions) {
 				for (const transaction of transactions) {
@@ -48,7 +49,7 @@
 </script>
 
 {#each data as month, i (month.date.getTime())}
-	<section class="focus:ring-opacity-20 ripped divide-y divide-gray-200 py-4 dark:divide-gray-700">
+	<article class="focus:ring-opacity-20 ripped divide-y divide-gray-200 py-4 dark:divide-gray-700">
 		{#if i > 0 || showFirstTitle}
 			<h2 class="p-2 text-xl">
 				{month.date.toLocaleDateString(getLocale(), { month: 'long' })}
@@ -86,5 +87,5 @@
 				<CurrencyValue amount={transaction.amount} {isInFuture} />
 			</button>
 		{/each}
-	</section>
+	</article>
 {/each}

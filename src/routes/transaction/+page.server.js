@@ -1,22 +1,23 @@
 import { fail, error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ locals, params }) {
+export async function load({ locals, url }) {
 	const supabase = locals.supabase;
-	const personId = parseInt(params.person);
+	const personId = ((raw) => (raw ? parseInt(raw) : null))(url.searchParams.get('person'));
 
 	// Validate personId is a valid number
-	if (isNaN(personId)) {
+	if (personId && isNaN(personId)) {
 		throw error(404, 'Person not found');
 	}
 
 	const [personRes, transactionsRes, totalDebtRes] = await Promise.all([
 		supabase.from('person').select('id,name'),
-		supabase
-			.from('transaction')
-			.select('id,amount,description,occured_at')
-			.eq('person_id', personId),
-		supabase.rpc('get_debt', { person_id_param: personId })
+		((query) => (personId ? query.eq('person_id', personId) : query))(
+			supabase.from('transaction').select('id,person_id,amount,description,occured_at')
+		),
+		personId
+			? supabase.rpc('get_debt', { person_id_param: personId })
+			: supabase.rpc('get_total_debt')
 	]);
 
 	if (personRes.error) {

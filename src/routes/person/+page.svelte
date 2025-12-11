@@ -27,9 +27,9 @@
 		</div>
 	{/if} -->
 
-	<h2 class="py-2 text-4xl font-light text-green-500 dark:text-green-400">
+	<h1 class="py-2 text-4xl font-light text-green-500 dark:text-green-400">
 		{m.route_person_title()}
-	</h2>
+	</h1>
 
 	<div
 		class="mx-auto flex items-center border-b-2 border-black px-4 py-2 text-green-500 dark:border-gray-300"
@@ -40,7 +40,7 @@
 
 	{#each data.people as person}
 		<a
-			href="/transaction/{person.id}"
+			href="/transaction?person={person.id}"
 			class="focus:ring-opacity-20 group flex cursor-pointer items-center space-x-4 rounded-xl bg-white p-6 shadow-lg shadow-emerald-50/50 transition hover:bg-gray-100 hover:not-italic focus:ring focus:ring-black focus:outline-none dark:bg-gray-800 dark:shadow-gray-950/20 dark:hover:bg-gray-700 dark:focus:ring-gray-400"
 			in:fly={{ y: 200, duration: 200 }}
 			out:fly={{ y: 200, duration: 200 }}
