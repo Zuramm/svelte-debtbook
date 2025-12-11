@@ -1,7 +1,10 @@
 <script>
 	import Navigation from '$components/Navigation.svelte';
+	import FilledButton from '$components/ui/FilledButton.svelte';
 	import OutlinedButton from '$components/ui/OutlinedButton.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import { m } from '$lib/paraglide/messages';
+	import { getLocale } from '$lib/paraglide/runtime';
 </script>
 
 <svelte:head>
@@ -9,7 +12,28 @@
 </svelte:head>
 
 <Navigation class="space-y-4 overflow-auto p-4 pb-24 md:mx-auto md:max-w-lg md:pb-12">
-	<form action="?/logout" method="post">
-		<OutlinedButton color="danger">{m.route_settings_logout()}</OutlinedButton>
-	</form>
+	<h1 class="py-2 text-4xl font-light text-green-500 dark:text-green-400">
+		{m.route_settings_title()}
+	</h1>
+
+	<article class="ripped space-y-8 px-4 py-6">
+		<h2 class="text-2xl font-light text-green-500 dark:text-green-400">
+			{m.route_settings_account_title()}
+		</h2>
+		<form action="?/language" method="post" class="row flex items-end gap-4">
+			<Select
+				class="flex-1"
+				label={m.route_settings_language_label()}
+				name="language"
+				value={getLocale()}
+			>
+				<option value="en">English</option>
+				<option value="de">Deutsch</option>
+			</Select>
+			<FilledButton type="submit">{m.route_settings_language_save()}</FilledButton>
+		</form>
+		<form action="?/logout" method="post">
+			<OutlinedButton class="w-full" color="danger">{m.route_settings_logout()}</OutlinedButton>
+		</form>
+	</article>
 </Navigation>
