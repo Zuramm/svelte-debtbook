@@ -8,7 +8,7 @@
 			person_id: number | null,
 			amount: number | null, 
 			description: string | null, 
-			occured_at: string | null,
+			occured_at: string,
 		}} Transaction */
 
 	/** @type {{ transactions: Transaction[], showFirstTitle?: boolean, ontransactionclick?: (transaction: Transaction) => void }} */
@@ -63,7 +63,7 @@
 				class={[
 					'grid w-full grid-cols-[2fr_auto_1fr_auto] items-center p-2 hover:bg-gray-100 sm:grid-cols-[3fr_auto_1fr_auto] md:grid-cols-[4fr_auto_1fr_auto] dark:hover:bg-gray-700',
 					isInFuture
-						? 'bg-opacity-60 dark:bg-opacity-60 bg-white text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+						? 'bg-white text-gray-600 italic opacity-70 dark:bg-gray-800 dark:text-gray-400'
 						: 'bg-white dark:bg-gray-800'
 				]}
 				onclick={() => ontransactionclick?.(transaction)}
@@ -75,11 +75,7 @@
 						--
 					{/if}
 				</span>
-				<span
-					class={[
-						'text-right text-gray-400 dark:text-gray-500',
-						isInFuture && 'text-gray-500 dark:text-gray-600'
-					]}
+				<span class={['text-right text-gray-400 dark:text-gray-500']}
 					>{transaction.occured_at
 						? new Date(transaction.occured_at).toLocaleDateString(getLocale())
 						: '--'}</span

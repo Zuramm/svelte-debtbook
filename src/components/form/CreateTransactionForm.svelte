@@ -7,12 +7,12 @@
 	import TextInput from '$components/ui/TextInput.svelte';
 	import { m } from '$lib/paraglide/messages';
 
-	/** @type {{ personId?: number | null, people: { id: number, name: string }[], amount?: number, date?: Date, description?: string, onclose?: () => void }} */
+	/** @type {{ personId?: number | null, people: { id: number, name: string }[], amount?: number, ocurred_at: Date, description?: string, onclose?: () => void }} */
 	let {
 		personId = $bindable(),
 		people = [],
 		amount = $bindable(),
-		date = $bindable(),
+		ocurred_at = $bindable(new Date()),
 		description = $bindable(),
 		onclose
 	} = $props();
@@ -43,9 +43,9 @@
 	/>
 	<DateInput
 		label={m.form_transaction_date_label()}
-		type="date"
 		name="occured_at"
-		bind:value={date}
+		bind:value={ocurred_at}
+		required
 	/>
 	<TextInput
 		class="sm:col-span-2"

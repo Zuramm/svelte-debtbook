@@ -60,7 +60,7 @@
 		<CreateDialog
 			people={data.people}
 			amount={0}
-			date={new Date()}
+			ocurred_at={new Date()}
 			description=""
 			onclose={() => (isModalOpen = false)}
 		/>

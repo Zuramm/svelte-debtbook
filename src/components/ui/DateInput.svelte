@@ -1,6 +1,13 @@
 <script>
-	/** @type {{ label: string, type?: string, name?: string, class?: string, value?: any, placeholder?: string }} */
-	let { label, name, value = $bindable(), placeholder = '', class: className = '' } = $props();
+	/** @type {{ label: string, name?: string, value?: Date | null, placeholder?: string, required?: boolean, class?: string }} */
+	let {
+		label,
+		name,
+		value = $bindable(),
+		placeholder = '',
+		required = false,
+		class: className = ''
+	} = $props();
 </script>
 
 <label class={className}>
@@ -10,6 +17,8 @@
 		type="date"
 		{name}
 		{placeholder}
-		bind:value
+		value={value?.toISOString().substring(0, 'YYYY-MM-DD'.length)}
+		onchange={(e) => (value = new Date(/** @type {HTMLInputElement} */ (e.target).value))}
+		{required}
 	/>
 </label>

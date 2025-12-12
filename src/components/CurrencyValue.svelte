@@ -17,10 +17,14 @@
 		currency: 'EUR'
 	})}
 </span>
-{#if amount && amount < 0}
-	<span class="hio hio-arrow-up ml-2 text-red-600 dark:text-red-400"></span>
-{:else if amount && amount > 0}
-	<span class="hio hio-arrow-down ml-2 text-green-600 dark:text-green-400"></span>
-{:else}
-	<span class="hio hio-arrow-equals ml-2 text-gray-400 dark:text-gray-500"></span>
-{/if}
+<span
+	class={[
+		'hio hio-arrow-up ml-2',
+		amount && amount < 0 && 'hio-arrow-up',
+		amount && amount > 0 && 'hio-arrow-down',
+		(!amount || amount === 0) && 'hio-arrow-equals',
+		!isInFuture && amount && amount < 0 && 'text-red-600 dark:text-red-400',
+		!isInFuture && amount && amount > 0 && 'text-green-600 dark:text-green-400',
+		(isInFuture || !amount || amount === 0) && 'text-gray-400 dark:text-gray-500'
+	]}
+></span>

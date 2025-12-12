@@ -25,7 +25,7 @@
 			person_id: number | null,
 			amount: number | null, 
 			description: string | null, 
-			occured_at: string | null,
+			occured_at: string,
 		}} Transaction */
 
 	/**
@@ -112,8 +112,9 @@
 	<Modal open={isCreateModalOpen}>
 		<CreateDialog
 			people={data.people}
+			{personId}
 			amount={0}
-			date={new Date()}
+			ocurred_at={new Date()}
 			description=""
 			onclose={() => (isCreateModalOpen = false)}
 		/>
@@ -125,7 +126,9 @@
 			personId={transactionToUpdate?.person_id}
 			people={data.people}
 			amount={transactionToUpdate?.amount}
-			date={transactionToUpdate?.occured_at ? new Date(transactionToUpdate.occured_at) : new Date()}
+			ocurred_at={transactionToUpdate?.occured_at
+				? new Date(transactionToUpdate.occured_at)
+				: new Date()}
 			description={transactionToUpdate?.description}
 			onclose={() => (transactionToUpdate = null)}
 		/>
