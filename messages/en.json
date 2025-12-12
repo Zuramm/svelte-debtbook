@@ -15,6 +15,8 @@
 	"form_transaction_create_button_create": "Create",
 	"form_transaction_date_label": "Date",
 	"form_transaction_description_label": "Description",
+	"form_transaction_direction_gave": "Gave",
+	"form_transaction_direction_received": "Received",
 	"form_transaction_person_empty": "No person",
 	"form_transaction_person_label": "Person",
 	"form_transaction_update_button_cancel": "Cancel",

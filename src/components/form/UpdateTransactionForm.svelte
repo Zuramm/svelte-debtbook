@@ -28,20 +28,34 @@
 			<option value={person.id}>{person.name}</option>
 		{/each}
 	</Select>
-	<div class="hidden sm:block"></div>
-	<TextInput
-		class="sm:col-span-2"
-		label={m.form_transaction_description_label()}
-		name="description"
-		bind:value={description}
-	/>
+	<div class="flex h-12 flex-row items-center gap-4 self-end">
+		<label class="grow-1">
+			<input type="radio" name="direction" value="gave" />
+			{m.form_transaction_direction_gave()}
+		</label>
+		<label class="grow-1">
+			<input type="radio" name="direction" value="received" checked />
+			{m.form_transaction_direction_received()}
+		</label>
+	</div>
 	<CurrencyInput
 		label={m.form_transaction_amount_label()}
 		type="number"
 		name="amount"
 		bind:value={amount}
 	/>
-	<DateInput label={m.form_transaction_date_label()} type="date" name="date" bind:value={date} />
+	<DateInput
+		label={m.form_transaction_date_label()}
+		type="date"
+		name="occured_at"
+		bind:value={date}
+	/>
+	<TextInput
+		class="sm:col-span-2"
+		label={m.form_transaction_description_label()}
+		name="description"
+		bind:value={description}
+	/>
 	<div class="flex flex-row justify-between sm:col-span-2">
 		<OutlinedButton color="danger" type="submit" formaction="/transaction?/delete"
 			>{m.form_transaction_update_button_delete()}</OutlinedButton

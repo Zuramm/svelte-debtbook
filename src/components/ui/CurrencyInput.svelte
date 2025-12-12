@@ -11,7 +11,7 @@
 		{name}
 		{placeholder}
 		bind:value
-		min="-1000000"
+		min="0"
 		max="1000000"
 		step="0.01"
 	/>

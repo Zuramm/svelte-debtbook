@@ -43,22 +43,51 @@ export async function load({ locals, url }) {
 /**
  * Validate the id
  * @param {FormDataEntryValue | null} id
- * @returns {[number | null, string[]]}
+ * @returns {[number, string[]]}
  */
 function validateId(id) {
 	/** @type {number | null} */
-	let idInt = null;
+	let idInt = 0;
 	if (!id) {
-		return [null, ['Id is required']];
+		return [idInt, ['Id is required']];
 	}
 	if (typeof id !== 'string') {
-		return [null, ['Id must be a string']];
+		return [idInt, ['Id must be a string']];
 	}
 	idInt = parseInt(id);
 	if (isNaN(idInt)) {
-		return [null, ['Id must be a valid number']];
+		return [idInt, ['Id must be a valid number']];
 	}
 	return [idInt, []];
+}
+
+/**
+ * Validate the direction
+ * @param {FormDataEntryValue | null} direction
+ * @returns {[number, string[]]}
+ */
+function validateDirection(direction) {
+	/** @type {number} */
+	let directionInt = 1;
+
+	if (direction) {
+		if (typeof direction !== 'string') {
+			return [directionInt, ['Direction must be a string']];
+		}
+		direction = direction.trim();
+
+		switch (direction) {
+			case 'gave':
+				directionInt = 1;
+				break;
+			case 'received':
+				directionInt = -1;
+				break;
+			default:
+				return [directionInt, ['Direction must be "gave" or "received"']];
+		}
+	}
+	return [directionInt, []];
 }
 
 /**
@@ -130,11 +159,18 @@ export const actions = {
 	create: async ({ request, locals: { supabase } }) => {
 		const formData = await request.formData();
 		const [personId, personIdErrors] = validateId(formData.get('person_id'));
+		const [direction, directionErrors] = validateDirection(formData.get('direction'));
 		const [amount, amountErrors] = validateAmount(formData.get('amount'));
 		const [description, descriptionErrors] = validateDescription(formData.get('description'));
 		const [occuredAt, occuredAtErrors] = validateOccuredAt(formData.get('occured_at'));
 
-		const errors = [...personIdErrors, ...amountErrors, ...descriptionErrors, ...occuredAtErrors];
+		const errors = [
+			...personIdErrors,
+			...directionErrors,
+			...amountErrors,
+			...descriptionErrors,
+			...occuredAtErrors
+		];
 		if (errors.length > 0) {
 			return fail(400, { errors });
 		}
@@ -142,7 +178,7 @@ export const actions = {
 		const { data, error } = await supabase.from('transaction').insert([
 			{
 				person_id: personId,
-				amount: amount,
+				amount: amount !== null ? direction * amount : null,
 				description: description,
 				occured_at: occuredAt?.toISOString().substring(0, 'YYYY-MM-DD'.length)
 			}
@@ -157,6 +193,7 @@ export const actions = {
 		const formData = await request.formData();
 		const [id, idErrors] = validateId(formData.get('id'));
 		const [personId, personIdErrors] = validateId(formData.get('person_id'));
+		const [direction, directionErrors] = validateDirection(formData.get('direction'));
 		const [amount, amountErrors] = validateAmount(formData.get('amount'));
 		const [description, descriptionErrors] = validateDescription(formData.get('description'));
 		const [occuredAt, occuredAtErrors] = validateOccuredAt(formData.get('occured_at'));
@@ -164,6 +201,7 @@ export const actions = {
 		const errors = [
 			...idErrors,
 			...personIdErrors,
+			...directionErrors,
 			...amountErrors,
 			...descriptionErrors,
 			...occuredAtErrors
@@ -176,7 +214,7 @@ export const actions = {
 			.from('transaction')
 			.update({
 				person_id: personId,
-				amount: amount,
+				amount: amount !== null ? direction * amount : null,
 				description: description,
 				occured_at: occuredAt?.toISOString().substring(0, 'YYYY-MM-DD'.length)
 			})
