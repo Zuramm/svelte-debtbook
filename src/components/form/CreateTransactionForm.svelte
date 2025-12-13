@@ -7,7 +7,7 @@
 	import TextInput from '$components/ui/TextInput.svelte';
 	import { m } from '$lib/paraglide/messages';
 
-	/** @type {{ personId?: number | null, people: { id: number, name: string }[], direction?: string, amount?: number, ocurred_at?: Date, description?: string, onclose?: () => void }} */
+	/** @type {{ personId?: number | null, people: { id: number, name: string }[], direction?: "gave" | "received", amount?: number, ocurred_at?: Date, description?: string, onclose?: () => void }} */
 	let {
 		personId = $bindable(),
 		people = [],

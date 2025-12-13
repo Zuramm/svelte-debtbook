@@ -122,8 +122,8 @@
 			personId={transactionToUpdate?.person_id}
 			people={data.people}
 			direction={transactionToUpdate?.amount && transactionToUpdate.amount < 0
-				? 'gave'
-				: 'received'}
+				? 'received'
+				: 'gave'}
 			amount={transactionToUpdate?.amount ? Math.abs(transactionToUpdate.amount) / 100 : null}
 			ocurred_at={transactionToUpdate?.occured_at
 				? new Date(transactionToUpdate.occured_at)
