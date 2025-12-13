@@ -94,7 +94,10 @@
 		{m.route_transaction_title()}
 	</h1>
 
-	<TransactionList transactions={futureData} />
+	<TransactionList
+		transactions={futureData}
+		ontransactionclick={(transaction) => (transactionToUpdate = transaction)}
+	/>
 
 	<div
 		class="mx-auto flex items-center border-b-2 border-black px-4 text-green-500 dark:border-gray-300"
@@ -109,23 +112,19 @@
 		ontransactionclick={(transaction) => (transactionToUpdate = transaction)}
 	/>
 
-	<Modal open={isCreateModalOpen}>
-		<CreateDialog
-			people={data.people}
-			{personId}
-			amount={0}
-			ocurred_at={new Date()}
-			description=""
-			onclose={() => (isCreateModalOpen = false)}
-		/>
+	<Modal bind:open={isCreateModalOpen}>
+		<CreateDialog people={data.people} {personId} onclose={() => (isCreateModalOpen = false)} />
 	</Modal>
 
-	<Modal open={transactionToUpdate !== null}>
+	<Modal open={transactionToUpdate !== null} onclose={() => (transactionToUpdate = null)}>
 		<UpdateDialog
 			id={transactionToUpdate?.id ?? 0}
 			personId={transactionToUpdate?.person_id}
 			people={data.people}
-			amount={transactionToUpdate?.amount}
+			direction={transactionToUpdate?.amount && transactionToUpdate.amount < 0
+				? 'gave'
+				: 'received'}
+			amount={transactionToUpdate?.amount ? Math.abs(transactionToUpdate.amount) / 100 : null}
 			ocurred_at={transactionToUpdate?.occured_at
 				? new Date(transactionToUpdate.occured_at)
 				: new Date()}

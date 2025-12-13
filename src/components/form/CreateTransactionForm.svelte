@@ -7,10 +7,11 @@
 	import TextInput from '$components/ui/TextInput.svelte';
 	import { m } from '$lib/paraglide/messages';
 
-	/** @type {{ personId?: number | null, people: { id: number, name: string }[], amount?: number, ocurred_at: Date, description?: string, onclose?: () => void }} */
+	/** @type {{ personId?: number | null, people: { id: number, name: string }[], direction?: string, amount?: number, ocurred_at?: Date, description?: string, onclose?: () => void }} */
 	let {
 		personId = $bindable(),
 		people = [],
+		direction = $bindable('received'),
 		amount = $bindable(),
 		ocurred_at = $bindable(new Date()),
 		description = $bindable(),
@@ -27,11 +28,11 @@
 	</Select>
 	<div class="flex h-12 flex-row items-center gap-4 self-end">
 		<label class="grow-1">
-			<input type="radio" name="direction" value="gave" />
+			<input type="radio" name="direction" value="gave" bind:group={direction} />
 			{m.form_transaction_direction_gave()}
 		</label>
 		<label class="grow-1">
-			<input type="radio" name="direction" value="received" checked />
+			<input type="radio" name="direction" value="received" bind:group={direction} />
 			{m.form_transaction_direction_received()}
 		</label>
 	</div>
