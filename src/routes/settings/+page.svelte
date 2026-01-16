@@ -1,8 +1,5 @@
 <script>
-	import Navigation from '$components/Navigation.svelte';
-	import FilledButton from '$components/ui/FilledButton.svelte';
-	import OutlinedButton from '$components/ui/OutlinedButton.svelte';
-	import Select from '$components/ui/Select.svelte';
+	import Header from '$components/Header.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { getLocale, setLocale } from '$lib/paraglide/runtime';
 </script>
@@ -11,33 +8,30 @@
 	<title>{m.route_settings_title()} - {m.app_title()}</title>
 </svelte:head>
 
-<Navigation class="space-y-4 overflow-auto p-4 pb-24 md:mx-auto md:max-w-lg md:pb-12">
-	<h1 class="py-2 text-4xl font-light text-green-500 dark:text-green-400">
-		{m.route_settings_title()}
-	</h1>
+<Header />
 
-	<article class="ripped space-y-8 px-4 py-6">
-		<h2 class="text-2xl font-light text-green-500 dark:text-green-400">
-			{m.route_settings_account_title()}
-		</h2>
-		<div class="row flex items-end gap-4">
-			<Select
-				class="flex-1"
-				label={m.route_settings_language_label()}
-				name="language"
-				value={getLocale()}
+<main class="mx-auto max-w-2xl space-y-4 p-4">
+	<h1 class="page-title">{m.route_settings_title()}</h1>
+
+	<div
+		class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 border-b border-gray-900/10 pb-12 sm:grid-cols-6 dark:border-white/10"
+	>
+		<div class="md:col-span-6">
+			<select
+				class="input"
 				onchange={(e) => {
 					const locale = /** @type {HTMLSelectElement|null} */ (e.target)?.value ?? 'en';
 					setLocale(/** @type {'en' | 'de'} */ (locale));
 				}}
+				value={getLocale()}
 			>
 				<option value="en">English</option>
 				<option value="de">Deutsch</option>
-			</Select>
-			<FilledButton type="submit">{m.route_settings_language_save()}</FilledButton>
+			</select>
 		</div>
-		<form action="?/logout" method="post">
-			<OutlinedButton class="w-full" color="danger">{m.route_settings_logout()}</OutlinedButton>
+
+		<form class="md:col-span-6" action="?/logout" method="post">
+			<button class="btn-primary danger w-full">{m.route_settings_logout()}</button>
 		</form>
-	</article>
-</Navigation>
+	</div>
+</main>

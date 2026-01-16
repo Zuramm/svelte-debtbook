@@ -1,44 +1,4 @@
-import { fail, error } from '@sveltejs/kit';
-
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ locals, url }) {
-	const supabase = locals.supabase;
-	const personId = ((raw) => (raw ? parseInt(raw) : null))(url.searchParams.get('person'));
-
-	// Validate personId is a valid number
-	if (personId && isNaN(personId)) {
-		throw error(404, 'Person not found');
-	}
-
-	const [personRes, transactionsRes, totalDebtRes] = await Promise.all([
-		supabase.from('person').select('id,name'),
-		((query) => (personId ? query.eq('person_id', personId) : query))(
-			supabase.from('transaction').select('id,person_id,amount,description,occured_at')
-		),
-		personId
-			? supabase.rpc('get_debt', { person_id_param: personId })
-			: supabase.rpc('get_total_debt')
-	]);
-
-	if (personRes.error) {
-		console.error(personRes.error);
-		throw error(404, 'Person not found');
-	}
-
-	if (transactionsRes.error) {
-		console.error(transactionsRes.error);
-	}
-
-	if (totalDebtRes.error) {
-		console.error(totalDebtRes.error);
-	}
-
-	return {
-		people: personRes.data ?? [],
-		transactions: transactionsRes.data ?? [],
-		totalDebt: totalDebtRes.data ?? 0
-	};
-}
+import { fail } from '@sveltejs/kit';
 
 /**
  * Validate the id

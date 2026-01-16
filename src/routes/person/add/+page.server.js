@@ -1,5 +1,5 @@
-import { fail } from '@sveltejs/kit';
-import { schema } from '.';
+import { fail, redirect } from '@sveltejs/kit';
+import { schema } from '..';
 
 /** @satisfies {import('./$types').Actions} */
 export const actions = {
@@ -19,6 +19,6 @@ export const actions = {
 			return fail(400, { errors: [error.message] });
 		}
 
-		return { success: true };
+		return redirect(303, '/person');
 	}
 };

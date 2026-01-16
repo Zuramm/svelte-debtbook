@@ -2,23 +2,15 @@
 	import { onMount } from 'svelte';
 	import { pwaInfo } from 'virtual:pwa-info';
 
-	import { page } from '$app/state';
 	import { m } from '$lib/paraglide/messages';
 
 	import './layout.css';
+	import { getLocale } from '$lib/paraglide/runtime';
+	import * as z from 'zod/mini';
 
 	let webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
 
-	let { children, data } = $props();
-
-	/** @type {'people' | 'settings' | undefined} */
-	let active = $derived(
-		page.url.pathname === '/person'
-			? 'people'
-			: page.url.pathname === '/settings'
-				? 'settings'
-				: undefined
-	);
+	let { children } = $props();
 
 	onMount(async () => {
 		if (pwaInfo) {
