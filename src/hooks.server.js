@@ -3,6 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { sequence } from '@sveltejs/kit/hooks';
+import { defaultSettings } from './settings';
 
 /** @type {Handle} */
 const handleParaglide = ({ event, resolve }) =>
@@ -44,11 +45,13 @@ const handleSupabase = ({ event, resolve }) => {
 	 * JWT before returning the session.
 	 */
 	event.locals.safeGetSession = async () => {
+		let settings = defaultSettings;
+
 		const {
 			data: { session }
 		} = await event.locals.supabase.auth.getSession();
 		if (!session) {
-			return { session: null, user: null };
+			return { session: null, user: null, settings };
 		}
 
 		const {
@@ -57,10 +60,21 @@ const handleSupabase = ({ event, resolve }) => {
 		} = await event.locals.supabase.auth.getUser();
 		if (error) {
 			// JWT validation has failed
-			return { session: null, user: null };
+			return { session: null, user: null, settings };
 		}
 
-		return { session, user };
+		if (user) {
+			const { data: remoteSettings, error } = await event.locals.supabase
+				.from('settings')
+				.select('*')
+				.eq('id', user.id);
+			// language: remoteSettings?.[0]?.language ?? defaultSettings.language,
+			settings.debtColor = remoteSettings?.[0]?.debt_color ?? settings.debtColor;
+			settings.precision = remoteSettings?.[0]?.precision ?? settings.precision;
+			settings.showMinus = remoteSettings?.[0]?.show_minus ?? settings.showMinus;
+		}
+
+		return { session, user, settings };
 	};
 
 	return resolve(event, {

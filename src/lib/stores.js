@@ -1,6 +1,6 @@
 /** @import { Component } from 'svelte' */
 /** @import { Readable } from 'svelte/store' */
-import { readable } from 'svelte/store';
+import { readable, writable } from 'svelte/store';
 
 /** @type {Readable<Date>} */
 export const today = readable(new Date(), (set) => {
@@ -37,3 +37,25 @@ export const today = readable(new Date(), (set) => {
 		if (interval) clearInterval(interval);
 	};
 });
+
+/**
+ * @readonly
+ * @enum {number}
+ */
+const ShowMinus = {
+	NEVER: 0,
+	ON_DEBT: 1,
+	ON_CREDIT: 2
+};
+
+export const settings = writable(
+	{
+		debtRed: true,
+		precision: 2,
+		showMinus: ShowMinus.ON_DEBT,
+		...JSON.parse(localStorage.getItem('settings') ?? '{}')
+	},
+	() => {
+		localStorage.setItem('settings', JSON.stringify(settings));
+	}
+);

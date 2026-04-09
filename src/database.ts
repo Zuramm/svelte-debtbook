@@ -19,22 +19,49 @@ export type Database = {
           created_at: string
           id: number
           name: string
-          note: string | null
-          user_id: string | null
+          note: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           name?: string
-          note?: string | null
-          user_id?: string | null
+          note?: string
+          user_id?: string
         }
         Update: {
           created_at?: string
           id?: number
           name?: string
-          note?: string | null
-          user_id?: string | null
+          note?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          debt_color: number | null
+          id: string
+          language: string
+          precision: number | null
+          show_minus: number | null
+          updated_at: string
+        }
+        Insert: {
+          debt_color?: number | null
+          id: string
+          language: string
+          precision?: number | null
+          show_minus?: number | null
+          updated_at?: string
+        }
+        Update: {
+          debt_color?: number | null
+          id?: string
+          language?: string
+          precision?: number | null
+          show_minus?: number | null
+          updated_at?: string
         }
         Relationships: []
       }

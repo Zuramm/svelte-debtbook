@@ -31,6 +31,38 @@
 		@apply relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-emerald-600 checked:bg-emerald-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 dark:border-white/10 dark:bg-white/5 dark:checked:border-emerald-500 dark:checked:bg-emerald-500 dark:focus-visible:outline-emerald-500 dark:disabled:border-white/5 dark:disabled:bg-white/10 dark:disabled:before:bg-white/20 forced-colors:appearance-auto forced-colors:before:hidden;
 	}
 
+	.slider {
+		@apply appearance-none w-full bg-transparent;
+	}
+
+	.slider:focus {
+		@apply outline-none;
+	}
+	
+	.slider::-webkit-slider-runnable-track {
+		@apply w-full h-2 bg-gray-900/50 dark:bg-gray-100/20 rounded;
+	}
+
+	.slider:focus-visible::-webkit-slider-runnable-track {
+		@apply outline-2 -outline-offset-2 outline-emerald-600 dark:outline-emerald-500;
+	}
+
+	.slider::-moz-range-track {
+		@apply w-full h-2 bg-gray-900/50 dark:bg-gray-100/20 rounded;
+	}
+
+	.slider:focus-visible::-moz-range-track {
+		@apply outline-2 -outline-offset-2 outline-emerald-600 dark:outline-emerald-500;
+	}
+
+	.slider::-webkit-slider-thumb {
+		@apply appearance-none w-5 h-5 bg-emerald-500 rounded-full -mt-1.5;
+	}
+
+	.slider::-moz-range-thumb {
+		@apply appearance-none w-5 h-5 bg-emerald-500 rounded-full -mt-1.5;
+	}
+
 	.btn-primary {
 		@apply rounded-md px-3 py-2 text-sm font-semibold shadow-xs transition-colors dark:shadow-none;
 		@apply bg-emerald-600 text-white hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400;
